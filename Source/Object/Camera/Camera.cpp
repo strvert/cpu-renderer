@@ -75,7 +75,7 @@ float2 Camera::GetRadianFov() const
 
 uint2 Camera::CalcResolution(const std::uint32_t& Width) const
 {
-    return static_cast<uint2>(float2 { Width, Width / GetAspectRatio() });
+    return static_cast<uint2>(float2 { static_cast<float>(Width), static_cast<float>(Width) / GetAspectRatio() });
 }
 
 float3 Camera::ScreenUVToPosition(const float2& UV) const

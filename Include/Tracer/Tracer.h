@@ -29,15 +29,15 @@ public:
     template <typename T, typename... Ts>
     T& EmplaceScene(Ts&&... Args)
     {
-        Scene = std::make_unique<T>(std::forward<Ts>(Args)...);
-        return dynamic_cast<T&>(*Scene);
+        CurrentScene = std::make_unique<T>(std::forward<Ts>(Args)...);
+        return dynamic_cast<T&>(*CurrentScene);
     }
 
     template <typename T, typename... Ts>
     T& EmplacePainter(Ts&&... Args)
     {
-        Painter = std::make_unique<T>(std::forward<Ts>(Args)...);
-        return dynamic_cast<T&>(*Painter);
+        CurrentPainter = std::make_unique<T>(std::forward<Ts>(Args)...);
+        return dynamic_cast<T&>(*CurrentPainter);
     }
 
     static std::size_t PixelToIndex(const uint2& Res, const uint2& Position);
@@ -58,8 +58,8 @@ private:
     std::uint32_t ImageWidth;
 
     std::vector<byte3> Buffer;
-    std::unique_ptr<TraceableScene> Scene;
-    std::unique_ptr<Painter> Painter;
+    std::unique_ptr<TraceableScene> CurrentScene;
+    std::unique_ptr<Painter> CurrentPainter;
 
     RenderRecord LastRender;
 };

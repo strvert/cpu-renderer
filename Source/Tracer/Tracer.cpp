@@ -34,25 +34,25 @@ void Tracer::SetPixelByIndex(const std::size_t Index, const float3& Color)
 
 void Tracer::Render()
 {
-    if (!Painter) {
+    if (!CurrentPainter) {
         std::cerr << "Painterオブジェクトが構築されていません" << std::endl;
         std::exit(1);
     }
 
-    if (const OptRef<Camera> CameraRef = Scene->GetActiveCamera(); CameraRef) {
+    if (const OptRef<Camera> CameraRef = CurrentScene->GetActiveCamera(); CameraRef) {
         const Camera& Camera = CameraRef->get();
         const auto& Res = Camera.CalcResolution(ImageWidth);
         const float3& Location = Camera.GetLocation();
 
         AllocateBuffer(Res);
 
-        for (std::size_t Y = 0; Y < Res.y; Y++) {
-            for (std::size_t X = 0; X < Res.x; X++) {
+        for (std::uint32_t Y = 0; Y < Res.y; Y++) {
+            for (std::uint32_t X = 0; X < Res.x; X++) {
                 const std::size_t Index = PixelToIndex(Res, { X, Y });
                 const float2 UV = PixelToUV(Res, { X, Y });
 
                 const Ray PrimaryRay = Camera.MakeRay(UV);
-                const float3 Color = Painter->Paint(Camera, Scene->Raycast(PrimaryRay));
+                const float3 Color = CurrentPainter->Paint(Camera, CurrentScene->Raycast(PrimaryRay));
                 SetPixelByIndex(Index, Color);
             }
         }
