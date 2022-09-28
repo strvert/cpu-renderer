@@ -1,6 +1,7 @@
 #include "Tracer/Tracer.h"
 
 #include <iostream>
+#include <optional>
 
 #include "Object/Camera/Camera.h"
 #include "Ray/Ray.h"
@@ -57,14 +58,16 @@ void Tracer::Render()
             }
         }
 
-        LastRender.Resolution = Res;
+        LastRender = RenderRecord { .Resolution = Res };
     }
 }
 
 void Tracer::Save(const std::string& Filename) const
 {
-    const uint2 Res = LastRender.Resolution;
-    stbi_write_png(Filename.c_str(), Res.x, Res.y, 3, Buffer.data(), 0);
+    if (LastRender) {
+        const uint2 Res = LastRender->Resolution;
+        stbi_write_png(Filename.c_str(), Res.x, Res.y, 3, Buffer.data(), 0);
+    }
 }
 
 void Tracer::AllocateBuffer(const uint2& Res)

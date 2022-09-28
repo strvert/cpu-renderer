@@ -61,7 +61,7 @@ private:
     std::unique_ptr<TraceableScene> CurrentScene;
     std::unique_ptr<Painter> CurrentPainter;
 
-    RenderRecord LastRender;
+    std::optional<RenderRecord> LastRender;
 };
 
 }

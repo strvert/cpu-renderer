@@ -56,7 +56,7 @@ void InitCameras(RT::ObjectsScene& Scene)
     {
         RT::Camera& Camera = Scene.Emplace<RT::Camera>("cam2"s);
         Camera.SetLocation({0, 0, 8});
-        Camera.SetDirection({0.01, 0, -1});
+        Camera.SetDirection({0.001, 0, -1});
         // Camera.SetAspectRatio(1);
     }
 }
@@ -72,7 +72,7 @@ int main()
     InitObjects(Scene);
     InitCameras(Scene);
 
-    Scene.SwitchCamera("cam1"s);
+    Scene.SwitchCamera("cam2"s);
     Tracer.EmplacePainter<RT::WorldNormalPainter>();
     Tracer.Render();
     Tracer.Save("WorldNormal.png"s);
