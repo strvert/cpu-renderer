@@ -1,4 +1,5 @@
 #include "Scene/ObjectsScene.h"
+#include <iostream>
 
 namespace Raytracer {
 
@@ -39,6 +40,7 @@ OptRef<Camera> ObjectsScene::GetActiveCamera() const
     if (!Name.empty() && Cameras.contains(Name)) {
         return std::ref(*Cameras.at(Name));
     }
+    std::cerr << Name << "は無効です" << std::endl; 
     return std::nullopt;
 }
 

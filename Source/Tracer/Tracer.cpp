@@ -64,10 +64,12 @@ void Tracer::Render()
 
 void Tracer::Save(const std::string& Filename) const
 {
-    if (LastRender) {
-        const uint2 Res = LastRender->Resolution;
-        stbi_write_png(Filename.c_str(), Res.x, Res.y, 3, Buffer.data(), 0);
+    if (!LastRender) {
+        std::cerr << "RenderRecordが無効です" << std::endl;
+        return;
     }
+    const uint2 Res = LastRender->Resolution;
+    stbi_write_png(Filename.c_str(), Res.x, Res.y, 3, Buffer.data(), 0);
 }
 
 void Tracer::AllocateBuffer(const uint2& Res)
