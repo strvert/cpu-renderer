@@ -40,10 +40,6 @@ public:
         return dynamic_cast<T&>(*CurrentPainter);
     }
 
-    static std::size_t PixelToIndex(const uint2& Res, const uint2& Position);
-
-    static float2 PixelToUV(const uint2& Res, const uint2& Position);
-
     float2 RadianFov() const;
 
     void SetPixelByIndex(const std::size_t Index, const float3& Color);
@@ -54,6 +50,10 @@ public:
 
 private:
     void AllocateBuffer(const uint2& Res);
+
+    static std::size_t PixelToIndex(const uint2& Res, const uint2& Position);
+
+    static float2 PixelToUV(const uint2& Res, const uint2& Position);
 
     std::uint32_t ImageWidth;
 
