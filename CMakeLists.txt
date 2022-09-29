@@ -9,6 +9,12 @@ target_compile_features(raytracer
     cxx_std_20
     )
 
+target_compile_options(raytracer
+    PRIVATE
+    -Wall
+    -Wextra
+    )
+
 target_include_directories(raytracer
     PRIVATE
     Include
