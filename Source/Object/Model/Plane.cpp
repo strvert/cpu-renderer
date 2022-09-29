@@ -4,7 +4,7 @@
 
 namespace Raytracer {
 
-std::optional<Raytracer::Record> PlaneModel::Test(const Ray& Ray, const TRange<float>& Range) const
+std::optional<Raytracer::Record> PlaneModel::RayCast(const Ray& Ray, const TRange<float>& Range) const
 {
     const float D = dot(Ray.Direction, Normal);
 

@@ -2,7 +2,7 @@
 
 namespace Raytracer {
 
-std::optional<Raytracer::Record> SphereModel::Test(const Ray& Ray, const TRange<float>& Range) const
+std::optional<Raytracer::Record> SphereModel::RayCast(const Ray& Ray, const TRange<float>& Range) const
 {
     const float3 CS = GetLocation() - Ray.Origin;
     const float A = dot(Ray.Direction, Ray.Direction);
