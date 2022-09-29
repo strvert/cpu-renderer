@@ -17,9 +17,10 @@ Camera::Camera()
     SetFocalLength(12);
 }
 
-void Camera::SetLocation(const float3& Location)
+Camera& Camera::SetLocation(const float3& Location)
 {
     this->Location = Location;
+    return *this;
 }
 
 float3 Camera::GetLocation() const
@@ -32,9 +33,10 @@ bool Camera::IsTraceable() const
     return false;
 }
 
-void Camera::SetDirection(const float3& Direction)
+Camera& Camera::SetDirection(const float3& Direction)
 {
     this->Direction = normalize(Direction);
+    return *this;
 }
 
 float3 Camera::GetDirection() const
@@ -42,9 +44,10 @@ float3 Camera::GetDirection() const
     return Direction;
 }
 
-void Camera::SetAspectRatio(const float& Ratio)
+Camera& Camera::SetAspectRatio(const float& Ratio)
 {
     AspectRatio = Ratio;
+    return *this;
 }
 
 float Camera::GetAspectRatio() const
@@ -52,9 +55,10 @@ float Camera::GetAspectRatio() const
     return AspectRatio;
 }
 
-void Camera::SetFocalLength(const float& FocalLength)
+Camera& Camera::SetFocalLength(const float& FocalLength)
 {
     this->FocalLength = FocalLength;
+    return *this;
 }
 
 float Camera::GetFocalLength() const
@@ -62,9 +66,10 @@ float Camera::GetFocalLength() const
     return FocalLength;
 }
 
-void Camera::SetFov(const float& Horizontal)
+Camera& Camera::SetFov(const float& Horizontal)
 {
     HorizontalFov = Horizontal;
+    return *this;
 }
 
 float2 Camera::GetRadianFov() const

@@ -14,7 +14,7 @@ protected:
 public:
     virtual ~SceneObject() { }
 
-    virtual void SetLocation(const float3& Location) = 0;
+    virtual SceneObject& SetLocation(const float3& Location) = 0;
     virtual float3 GetLocation() const = 0;
     virtual bool IsTraceable() const = 0;
 };

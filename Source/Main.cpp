@@ -7,9 +7,11 @@
 
 #include "linalg/linalg.h"
 
+#include "Object/Light/DirectionalLight.h"
 #include "Object/Model/Plane.h"
 #include "Object/Model/Sphere.h"
 #include "Painter/FacingRatioPainter.h"
+#include "Painter/SceneColorPainter.h"
 #include "Painter/WorldNormalPainter.h"
 #include "Ray/Ray.h"
 #include "Scene/ObjectsScene.h"
@@ -22,42 +24,42 @@ namespace RT = Raytracer;
 
 void InitObjects(RT::ObjectsScene& Scene)
 {
-    {
-        auto& Model = Scene.Emplace<RT::SphereModel>("sphere1"s, 2);
-        Model.SetLocation({ 0, -5, -1 });
-        Model.SetColor(RT::Color::Red);
-    }
-    {
-        auto& Model = Scene.Emplace<RT::SphereModel>("sphere2"s, 3);
-        Model.SetLocation({ 0, 0, 0 });
-        Model.SetColor(RT::Color::Green);
-    }
-    {
-        auto& Model = Scene.Emplace<RT::SphereModel>("sphere3"s, 2);
-        Model.SetLocation({ 0, 5, -1 });
-        Model.SetColor(RT::Color::Blue);
-    }
+    Scene.Emplace<RT::SphereModel>("sphere1"s, 2)
+        .SetLocation({ 0, -5, -1 })
+        .SetColor(RT::Color::Red);
 
-    {
-        auto& Model = Scene.Emplace<RT::PlaneModel>("ground"s, float3 { 0, 0, 1 });
-        Model.SetLocation({ 0, 0, -3 });
-        Model.SetColor(RT::Color::White);
-    }
+    Scene.Emplace<RT::SphereModel>("sphere2"s, 3)
+        .SetLocation({ 0, 0, 0 })
+        .SetColor(RT::Color::Green);
+
+    Scene.Emplace<RT::SphereModel>("sphere3"s, 2)
+        .SetLocation({ 0, 5, -1 })
+        .SetColor(RT::Color::Blue);
+
+    Scene.Emplace<RT::PlaneModel>("ground"s, float3 { 0, 0, 1 })
+        .SetLocation({ 0, 0, -3 })
+        .SetColor(RT::Color::White);
 }
 
 void InitCameras(RT::ObjectsScene& Scene)
 {
-    {
-        RT::Camera& Camera = Scene.Emplace<RT::Camera>("cam1"s);
-        Camera.SetLocation({-10, 0, 0});
-        Camera.SetDirection({0.5, 0, 0.0});
-    }
+    Scene.Emplace<RT::Camera>("cam1"s)
+        .SetLocation({ -10, 0, 0 })
+        .SetDirection({ 0.5, 0, 0.0 });
+    //  .SetAspectRatio(1);
 
+    Scene.Emplace<RT::Camera>("cam2"s)
+        .SetLocation({ 0, 0, 8 })
+        .SetDirection({ 0.001, 0, -1 });
+    //  .SetAspectRatio(1);
+}
+
+void InitLights(RT::ObjectsScene& Scene)
+{
     {
-        RT::Camera& Camera = Scene.Emplace<RT::Camera>("cam2"s);
-        Camera.SetLocation({0, 0, 8});
-        Camera.SetDirection({0.001, 0, -1});
-        // Camera.SetAspectRatio(1);
+        Scene.Emplace<RT::DirectionalLight>("dlight1"s)
+            .SetDirection({ 0.3, 0.3, -1 })
+            .SetLocation({});
     }
 }
 
@@ -71,13 +73,18 @@ int main()
 
     InitObjects(Scene);
     InitCameras(Scene);
+    InitLights(Scene);
 
-    Scene.SwitchCamera("cam2"s);
-    Tracer.EmplacePainter<RT::WorldNormalPainter>();
-    Tracer.Render();
-    Tracer.Save("WorldNormal.png"s);
+    Scene.SwitchCamera("cam1"s);
+    // Tracer.EmplacePainter<RT::WorldNormalPainter>();
+    // Tracer.Render();
+    // Tracer.Save("WorldNormal.png"s);
 
-    Tracer.EmplacePainter<RT::FacingRatioPainter>();
+    // Tracer.EmplacePainter<RT::FacingRatioPainter>();
+    // Tracer.Render();
+    // Tracer.Save("FacingRatio.png"s);
+
+    Tracer.EmplacePainter<RT::SceneColorPainter>();
     Tracer.Render();
-    Tracer.Save("FacingRatio.png"s);
+    Tracer.Save("Lambert.png"s);
 }

@@ -11,20 +11,20 @@ public:
 
     virtual ~Camera() { }
 
-    virtual void SetLocation(const float3& Location) override;
+    virtual Camera& SetLocation(const float3& Location) override;
     virtual float3 GetLocation() const override;
     virtual bool IsTraceable() const override;
 
-    void SetDirection(const float3& Direction);
+    Camera& SetDirection(const float3& Direction);
     float3 GetDirection() const;
 
-    void SetAspectRatio(const float& Ratio);
+    Camera& SetAspectRatio(const float& Ratio);
     float GetAspectRatio() const;
 
-    void SetFocalLength(const float& FocalLength);
+    Camera& SetFocalLength(const float& FocalLength);
     float GetFocalLength() const;
 
-    void SetFov(const float& Horizontal);
+    Camera& SetFov(const float& Horizontal);
     float2 GetRadianFov() const;
 
     uint2 CalcResolution(const std::uint32_t& Width) const;

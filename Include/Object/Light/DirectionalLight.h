@@ -17,7 +17,7 @@ public:
     virtual ~DirectionalLight() { }
 
     float3 GetDirection() const;
-    void SetDirection(const float3& Direction);
+    DirectionalLight& SetDirection(const float3& Direction);
 
 private:
     float3 Direction;

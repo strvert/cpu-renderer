@@ -17,9 +17,10 @@ public:
 
     virtual ~Light() { }
 
-    virtual void SetLocation(const float3& Location) override
+    virtual Light& SetLocation(const float3& Location) override
     {
         this->Location = Location;
+        return *this;
     }
 
     virtual float3 GetLocation() const override
@@ -32,9 +33,10 @@ public:
         return false;
     }
 
-    virtual void SetLightColor(const float3& Color)
+    virtual Light& SetLightColor(const float3& Color)
     {
         this->Color = Color;
+        return *this;
     }
 
     virtual float3 GetLightColor() const

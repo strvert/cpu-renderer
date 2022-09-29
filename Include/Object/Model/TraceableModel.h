@@ -15,11 +15,11 @@ public:
     }
     virtual ~TraceableModel() { }
 
-    virtual void SetLocation(const float3& Location) override;
+    virtual TraceableModel& SetLocation(const float3& Location) override;
     virtual float3 GetLocation() const override;
     virtual bool IsTraceable() const override;
 
-    virtual void SetColor(const float3& Color);
+    virtual TraceableModel& SetColor(const float3& Color);
     virtual float3 GetColor() const;
     virtual std::optional<Record> RayCast(const Ray& Ray, const TRange<>& Range) const = 0;
 

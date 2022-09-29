@@ -4,9 +4,10 @@ namespace Raytracer {
 
 using namespace linalg::aliases;
 
-void TraceableModel::SetLocation(const float3& Location)
+TraceableModel& TraceableModel::SetLocation(const float3& Location)
 {
     this->Location = Location;
+    return *this;
 }
 
 float3 TraceableModel::GetLocation() const
@@ -19,8 +20,9 @@ bool TraceableModel::IsTraceable() const
     return true;
 }
 
-void TraceableModel::SetColor(const float3& Color) {
+TraceableModel& TraceableModel::SetColor(const float3& Color) {
     this->Color = Color;
+    return *this;
 }
 
 float3 TraceableModel::GetColor() const
