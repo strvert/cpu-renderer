@@ -5,7 +5,7 @@
 namespace Raytracer {
 
 struct SphereModel : public TraceableModel {
-    SphereModel(const float Radius, const float3& Color = float3 { 1, 1, 1 })
+    SphereModel(const float Radius)
         : Radius(Radius)
     {
     }

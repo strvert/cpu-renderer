@@ -11,8 +11,10 @@ namespace Raytracer {
 class FacingRatioPainter : public Painter {
 public:
     FacingRatioPainter(const float MinBrightness = 0, const float3& Background = { 0, 0, 0 })
-        : MinBrightness(MinBrightness)
-        , Painter(Background) {};
+        : Painter(Background)
+        , MinBrightness(MinBrightness)
+    {
+    }
     virtual ~FacingRatioPainter() {};
 
     virtual float3 Paint(const Camera& Camera, const std::optional<Record>& Record) const override

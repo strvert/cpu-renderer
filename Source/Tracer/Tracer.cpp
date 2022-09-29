@@ -43,7 +43,6 @@ void Tracer::Render()
     if (const OptRef<Camera> CameraRef = CurrentScene->GetActiveCamera(); CameraRef) {
         const Camera& Camera = CameraRef->get();
         const auto& Res = Camera.CalcResolution(ImageWidth);
-        const float3& Location = Camera.GetLocation();
 
         AllocateBuffer(Res);
 
