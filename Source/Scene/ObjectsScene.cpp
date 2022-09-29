@@ -36,7 +36,6 @@ std::optional<const Record> ObjectsScene::Raycast(const Ray& Ray, const TRange<f
 OptRef<Camera> ObjectsScene::GetActiveCamera() const
 {
     const auto& Name = ActiveCameraName;
-    if (Name.empty() && Cameras.contains(Name)) {
     if (!Name.empty() && Cameras.contains(Name)) {
         return std::ref(*Cameras.at(Name));
     }
