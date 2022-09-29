@@ -17,7 +17,7 @@ public:
     virtual float3 Paint(const Camera& Camera, const std::optional<Record>& Record) const override
     {
         if (Record && Record->IsFront) {
-            return Record->Color * float3(-std::min<float>(0, dot(Camera.GetCameraDirection(), Record->Normal)));
+            return Record->Color * float3(-std::min<float>(0, dot(Camera.GetDirection(), Record->Normal)));
         }
         return Background;
     }
