@@ -18,11 +18,7 @@ std::optional<const Record> ObjectsScene::RayCast(const Ray& Ray, const TRange<f
     for (const auto& [Key, Model] : Models) {
         const std::optional<Record>& Rec = Model->RayCast(Ray, WorkingRange);
 
-        if (!Rec) {
-            continue;
-        }
-
-        if (!WorkingRange.Included(Rec->T)) {
+        if (!Rec || !WorkingRange.Included(Rec->T)) {
             continue;
         }
 
