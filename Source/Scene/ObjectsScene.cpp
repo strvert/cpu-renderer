@@ -22,7 +22,7 @@ std::optional<const Record> ObjectsScene::RayCast(const Ray& Ray, const TRange<f
             continue;
         }
 
-        if (Rec->T > WorkingRange.TMax) {
+        if (!WorkingRange.Included(Rec->T)) {
             continue;
         }
 
