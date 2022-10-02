@@ -15,7 +15,7 @@
 #include "Painter/WorldNormalPainter.h"
 #include "Ray/Ray.h"
 #include "Scene/ObjectsScene.h"
-#include "Shader/Color.h"
+#include "Material/Color.h"
 #include "Tracer/Tracer.h"
 
 using namespace std::literals::string_literals;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Object/Light/Light.h"
-#include "Shader/Color.h"
+#include "Material/Color.h"
 #include <functional>
 
 namespace Raytracer {
