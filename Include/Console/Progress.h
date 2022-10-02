@@ -8,17 +8,19 @@ namespace Raytracer {
 
 class Progress {
 public:
-    Progress(const std::uint32_t Total);
+    Progress(const std::uint32_t Total, const std::uint32_t BarLength = 20);
 
     void Update(const std::uint32_t Value);
     void End();
 
 private:
     void WakePrintTask();
-    void PrintProgress(const std::uint32_t Length);
+    void PrintProgress();
 
     std::uint32_t Total;
     std::uint32_t Current;
+
+    std::uint32_t BarLength;
 
     std::condition_variable PrintCond;
     std::mutex PrintMtx;

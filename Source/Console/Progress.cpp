@@ -5,9 +5,10 @@
 
 namespace Raytracer {
 
-Progress::Progress(const std::uint32_t Total)
+Progress::Progress(const std::uint32_t Total, const std::uint32_t BarLength)
     : Total(Total)
     , Current(0)
+    , BarLength(BarLength)
 {
     WakePrintTask();
 }
@@ -23,12 +24,12 @@ void Progress::WakePrintTask()
             {
                 std::unique_lock<std::mutex> Lock(PrintMtx);
                 PrintCond.wait(Lock);
-                PrintProgress(20);
+                PrintProgress();
             }
 
             if (Notify.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
                 // std::cout << Total << " / " << Total << "\e[1G" << std::endl;
-                PrintProgress(20);
+                PrintProgress();
                 std::cout << "\e[?25h" << std::flush;
                 std::cout << std::endl;
                 break;
@@ -41,16 +42,16 @@ void Progress::WakePrintTask()
     PrintTask.detach();
 }
 
-void Progress::PrintProgress(const std::uint32_t Length)
+void Progress::PrintProgress()
 {
     const float P = static_cast<float>(Current) / static_cast<float>(Total);
-    std::uint32_t Filled = Length * P;
+    std::uint32_t Filled = BarLength * P;
 
     std::cout << "|";
     for (std::uint32_t Idx = 0; Idx < Filled; Idx++) {
         std::cout << "█";
     }
-    for (std::uint32_t Idx = 0; Idx < Length - Filled; Idx++) {
+    for (std::uint32_t Idx = 0; Idx < BarLength - Filled; Idx++) {
         std::cout << " ";
     }
     std::cout << "|";

@@ -47,7 +47,7 @@ void Tracer::Render()
 
         AllocateBuffer(Res);
 
-        auto&& RenderProgress = Progress(Res.y * Res.x);
+        auto&& RenderProgress = Progress(Res.y * Res.x, 100);
         for (std::uint32_t Y = 0; Y < Res.y; Y++) {
             for (std::uint32_t X = 0; X < Res.x; X++) {
                 const std::size_t Index = PixelToIndex(Res, { X, Y });
