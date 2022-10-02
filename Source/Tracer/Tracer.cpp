@@ -3,6 +3,7 @@
 #include <iostream>
 #include <optional>
 
+#include "Console/Progress.h"
 #include "Object/Camera/Camera.h"
 #include "Ray/Ray.h"
 #include "Scene/Scene.h"
@@ -46,6 +47,7 @@ void Tracer::Render()
 
         AllocateBuffer(Res);
 
+        auto&& RenderProgress = Progress(Res.y * Res.x);
         for (std::uint32_t Y = 0; Y < Res.y; Y++) {
             for (std::uint32_t X = 0; X < Res.x; X++) {
                 const std::size_t Index = PixelToIndex(Res, { X, Y });
@@ -55,7 +57,9 @@ void Tracer::Render()
                 const float3 Color = CurrentPainter->Paint(Camera, CurrentScene->RayCast(PrimaryRay));
                 SetPixelByIndex(Index, Color);
             }
+            RenderProgress.Update((1 + Y) * Res.x);
         }
+        RenderProgress.End();
 
         LastRender = RenderRecord { .Resolution = Res };
     }
