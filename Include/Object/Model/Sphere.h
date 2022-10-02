@@ -12,7 +12,7 @@ struct SphereModel : public TraceableModel {
 
     virtual ~SphereModel() { }
 
-    virtual std::optional<Record> RayCast(const Ray& Ray, const TRange<>& Range) const override;
+    virtual std::optional<SurfaceRecord> RayCast(const Ray& Ray, const TRange<>& Range) const override;
 
     float Radius;
 };

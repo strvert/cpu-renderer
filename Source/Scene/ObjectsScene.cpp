@@ -10,13 +10,13 @@ void ObjectsScene::ClearAll()
     Models.clear();
 }
 
-std::optional<const Record> ObjectsScene::RayCast(const Ray& Ray, const TRange<float>& Range) const
+std::optional<const SurfaceRecord> ObjectsScene::RayCast(const Ray& Ray, const TRange<float>& Range) const
 {
     TRange<> WorkingRange = Range;
-    std::optional<Record> WorkingRec;
+    std::optional<SurfaceRecord> WorkingRec;
 
     for (const auto& [Key, Model] : Models) {
-        const std::optional<Record>& Rec = Model->RayCast(Ray, WorkingRange);
+        const std::optional<SurfaceRecord>& Rec = Model->RayCast(Ray, WorkingRange);
 
         if (!Rec || !WorkingRange.Included(Rec->T)) {
             continue;

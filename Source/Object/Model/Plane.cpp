@@ -4,7 +4,7 @@
 
 namespace Raytracer {
 
-std::optional<Raytracer::Record> PlaneModel::RayCast(const Ray& Ray, const TRange<float>& Range) const
+std::optional<SurfaceRecord> PlaneModel::RayCast(const Ray& Ray, const TRange<float>& Range) const
 {
     const float D = dot(Ray.Direction, Normal);
 
@@ -20,7 +20,7 @@ std::optional<Raytracer::Record> PlaneModel::RayCast(const Ray& Ray, const TRang
     }
 
     const bool Front = D < 0;
-    return Record { .T = T, .IsFront = Front, .Position = Ray.P(T), .Color = GetColor(), .Normal = Normal };
+    return SurfaceRecord { .T = T, .IsFront = Front, .Position = Ray.P(T), .Color = GetColor(), .Normal = Normal };
 }
 
 }

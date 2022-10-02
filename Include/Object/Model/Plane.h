@@ -13,7 +13,7 @@ public:
 
     virtual ~PlaneModel() { }
 
-    virtual std::optional<Record> RayCast(const Ray& Ray, const TRange<>& Range) const override;
+    virtual std::optional<SurfaceRecord> RayCast(const Ray& Ray, const TRange<>& Range) const override;
 
 private:
     float3 Normal;

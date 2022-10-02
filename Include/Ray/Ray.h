@@ -56,7 +56,7 @@ struct Ray {
     }
 };
 
-struct Record {
+struct SurfaceRecord {
     float T;
     bool IsFront;
     float3 Position;

@@ -22,7 +22,7 @@ T& Value(OptRef<T> Ref)
 class TraceableScene {
 public:
     virtual ~TraceableScene() { }
-    virtual std::optional<const class Record> RayCast(const class Ray& Ray, const TRange<float>& Range = TRange<>::Positive()) const = 0;
+    virtual std::optional<const class SurfaceRecord> RayCast(const class Ray& Ray, const TRange<float>& Range = TRange<>::Positive()) const = 0;
     virtual OptRef<class Camera> GetActiveCamera() const = 0;
 };
 

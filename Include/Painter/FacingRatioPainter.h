@@ -17,7 +17,7 @@ public:
     }
     virtual ~FacingRatioPainter() {};
 
-    virtual float3 Paint(const Camera& Camera, const std::optional<Record>& Record) const override
+    virtual float3 Paint(const Camera& Camera, const std::optional<SurfaceRecord>& Record) const override
     {
         if (Record && Record->IsFront) {
             return float3(std::max(MinBrightness, -dot(Camera.GetDirection(), Record->Normal)));

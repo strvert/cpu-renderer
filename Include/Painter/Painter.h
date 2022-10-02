@@ -6,7 +6,7 @@
 namespace Raytracer {
 
 using linalg::aliases::float3;
-class Record;
+class SurfaceRecord;
 
 class Painter {
 public:
@@ -16,7 +16,7 @@ public:
     }
 
     virtual ~Painter() {};
-    virtual float3 Paint(const Camera& Camera, const std::optional<Record>& Record) const = 0;
+    virtual float3 Paint(const Camera& Camera, const std::optional<SurfaceRecord>& Record) const = 0;
 
 protected:
     float3 Background;

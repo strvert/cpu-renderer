@@ -2,7 +2,7 @@
 
 namespace Raytracer {
 
-std::optional<Raytracer::Record> SphereModel::RayCast(const Ray& Ray, const TRange<float>& Range) const
+std::optional<SurfaceRecord> SphereModel::RayCast(const Ray& Ray, const TRange<float>& Range) const
 {
     const float3 CS = GetLocation() - Ray.Origin;
     const float A = dot(Ray.Direction, Ray.Direction);
@@ -17,7 +17,7 @@ std::optional<Raytracer::Record> SphereModel::RayCast(const Ray& Ray, const TRan
             const float3 P = Ray.P(T);
             const float3 N = (P - GetLocation()) / Radius;
             const bool Front = dot(N, Ray.Direction) < 0;
-            return Record { .T = T, .IsFront = Front, .Position = P, .Color = GetColor(), .Normal = N };
+            return SurfaceRecord { .T = T, .IsFront = Front, .Position = P, .Color = GetColor(), .Normal = N };
         }
     }
 

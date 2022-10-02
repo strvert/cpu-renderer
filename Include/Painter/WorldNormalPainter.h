@@ -11,7 +11,7 @@ public:
         : Painter(Background) {};
     virtual ~WorldNormalPainter() {};
 
-    virtual float3 Paint(const Camera&, const std::optional<Record>& Record) const override
+    virtual float3 Paint(const Camera&, const std::optional<SurfaceRecord>& Record) const override
     {
         if (Record && Record->IsFront) {
             return (Record->Normal + 1.0f) * 0.5f;
