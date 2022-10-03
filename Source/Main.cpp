@@ -56,24 +56,27 @@ void InitCameras(RT::ObjectsScene& Scene)
 
 void InitLights(RT::ObjectsScene& Scene)
 {
-    {
-        Scene.Emplace<RT::DirectionalLight>("dlight1"s)
-            .SetDirection({ 0.3, 0.3, -1 })
-            .SetLocation({});
-    }
+    Scene.Emplace<RT::DirectionalLight>("dlight1"s)
+        .SetDirection({ 0.3, 0.3, -1 })
+        .SetLocation({});
+}
+
+void InitScene(RT::ObjectsScene& Scene)
+{
+    InitObjects(Scene);
+    InitCameras(Scene);
+    InitLights(Scene);
 }
 
 int main()
 {
-    RT::Tracer Tracer(720);
+    RT::Tracer Tracer(1080);
 
     RT::ObjectsScene& Scene = Tracer.EmplaceScene<RT::ObjectsScene>();
 
     Scene.ClearAll();
 
-    InitObjects(Scene);
-    InitCameras(Scene);
-    InitLights(Scene);
+    InitScene(Scene);
 
     Scene.SwitchCamera("cam1"s);
     // Tracer.EmplacePainter<RT::WorldNormalPainter>();
