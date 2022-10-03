@@ -28,7 +28,6 @@ void Progress::WakePrintTask()
             }
 
             if (Notify.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-                // std::cout << Total << " / " << Total << "\e[1G" << std::endl;
                 PrintProgress();
                 std::cout << "\e[?25h" << std::flush;
                 std::cout << std::endl;
