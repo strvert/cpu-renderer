@@ -4,6 +4,7 @@
 #include "linalg/linalg.h"
 #include <memory>
 #include <optional>
+#include <ostream>
 
 namespace Raytracer {
 
@@ -69,7 +70,11 @@ struct SurfaceRecord {
     float3 Position;
     float3 Color;
     float3 Normal;
+    float Radiance;
     std::weak_ptr<class Material> Mat;
 };
 
 }
+
+std::ostream& operator<<(std::ostream& os, const linalg::aliases::float3& R);
+std::ostream& operator<<(std::ostream& os, const Raytracer::Ray& R);
