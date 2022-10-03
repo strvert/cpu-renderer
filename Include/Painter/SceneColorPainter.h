@@ -21,6 +21,11 @@ public:
         }
         return Background;
     }
+
+    virtual RenderFlags GetRenderFlags() const override
+    {
+        return { .DirectLight = true };
+    }
 };
 
 }

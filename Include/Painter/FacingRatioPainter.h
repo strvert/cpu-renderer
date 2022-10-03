@@ -25,6 +25,11 @@ public:
         return Background;
     }
 
+    virtual RenderFlags GetRenderFlags() const override
+    {
+        return { .DirectLight = false };
+    }
+
 private:
     float MinBrightness;
 };

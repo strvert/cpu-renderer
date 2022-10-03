@@ -54,7 +54,7 @@ void Tracer::Render()
                 const float2 UV = PixelToUV(Res, { X, Y });
 
                 const Ray PrimaryRay = Camera.MakeRay(UV);
-                const float3 Color = CurrentPainter->Paint(Camera, CurrentScene->RayCast(PrimaryRay));
+                const float3 Color = CurrentPainter->Paint(Camera, CurrentScene->RayCast(CurrentPainter->GetRenderFlags(), PrimaryRay));
                 SetPixelByIndex(Index, Color);
             }
             RenderProgress.Update((1 + Y) * Res.x);

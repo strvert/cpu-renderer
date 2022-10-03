@@ -7,6 +7,8 @@
 
 namespace Raytracer {
 
+struct RenderFlags;
+
 template <typename T>
 using Ref = std::reference_wrapper<T>;
 
@@ -22,7 +24,7 @@ T& Value(OptRef<T> Ref)
 class TraceableScene {
 public:
     virtual ~TraceableScene() { }
-    virtual std::optional<const class SurfaceRecord> RayCast(const class Ray& Ray, const TRange<float>& Range = TRange<>::Positive()) const = 0;
+    virtual std::optional<const class SurfaceRecord> RayCast(const RenderFlags& Flags, const class Ray& Ray, const TRange<float>& Range = TRange<>::Positive()) const = 0;
     virtual OptRef<class Camera> GetActiveCamera() const = 0;
 };
 

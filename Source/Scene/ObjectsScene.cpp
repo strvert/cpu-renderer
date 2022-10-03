@@ -1,5 +1,6 @@
 #include "Scene/ObjectsScene.h"
 #include "Ray/Ray.h"
+#include "Painter/Painter.h"
 #include <iostream>
 
 namespace Raytracer {
@@ -11,7 +12,7 @@ void ObjectsScene::ClearAll()
     Models.clear();
 }
 
-std::optional<const SurfaceRecord> ObjectsScene::RayCast(const Ray& InRay, const TRange<float>& Range) const
+std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flags, const Ray& InRay, const TRange<float>& Range) const
 {
     std::optional<SurfaceRecord> WorkingRec = CheckHit(InRay, Range);
 
@@ -21,12 +22,13 @@ std::optional<const SurfaceRecord> ObjectsScene::RayCast(const Ray& InRay, const
 
     TRange<float> WorkingRange(Range.TMin, WorkingRec->T);
 
-    // Direct Lighting
-    for (const auto& [Key, Light] : Lights) {
-        const auto& [SRay, T] = Light->MakeShadowRay(WorkingRec->Position + WorkingRec->Normal * 0.00001f);
-        if (const std::optional<SurfaceRecord>& DirectShadowRecord = CheckHit(SRay, TRange(Range.TMin, T))) {
-        } else {
-            WorkingRec->Radiance += Light->GetIrradiance(WorkingRec->Position, WorkingRec->Normal);
+    if (Flags.DirectLight) {
+        for (const auto& [Key, Light] : Lights) {
+            const auto& [SRay, T] = Light->MakeShadowRay(WorkingRec->Position + WorkingRec->Normal * 0.00001f);
+            if (const std::optional<SurfaceRecord>& DirectShadowRecord = CheckHit(SRay, TRange(Range.TMin, T))) {
+            } else {
+                WorkingRec->Radiance += Light->GetIrradiance(WorkingRec->Position, WorkingRec->Normal);
+            }
         }
     }
 

@@ -48,7 +48,7 @@ public:
 
     void ClearAll();
 
-    virtual std::optional<const SurfaceRecord> RayCast(const Ray& Ray, const TRange<float>& Range) const override;
+    virtual std::optional<const SurfaceRecord> RayCast(const RenderFlags& Flags, const Ray& Ray, const TRange<float>& Range) const override;
     virtual OptRef<Camera> GetActiveCamera() const override;
     
     bool SwitchCamera(const std::string& Name);
