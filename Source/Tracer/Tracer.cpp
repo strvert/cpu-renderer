@@ -31,7 +31,7 @@ float2 Tracer::PixelToUV(const uint2& Res, const uint2& Position)
 
 void Tracer::SetPixelByIndex(const std::size_t Index, const float3& Color)
 {
-    Buffer[Index] = static_cast<byte3>(float3(255) * Color);
+    Buffer[Index] = static_cast<byte3>(float3(255) * min(Color, 1.0f));
 }
 
 void Tracer::Render()
