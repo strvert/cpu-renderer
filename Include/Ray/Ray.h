@@ -1,8 +1,8 @@
 #pragma once
 
-#include "linalg/linalg.h"
-#include "Material/Material.h"
 #include <functional>
+#include "linalg/linalg.h"
+#include <memory>
 #include <optional>
 
 namespace Raytracer {
@@ -69,7 +69,7 @@ struct SurfaceRecord {
     float3 Position;
     float3 Color;
     float3 Normal;
-    std::optional<Material> Material;
+    std::weak_ptr<class Material> Mat;
 };
 
 }
