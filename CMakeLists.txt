@@ -28,6 +28,7 @@ target_sources(raytracer
     Source/Object/Model/Plane.cpp
     Source/Object/Model/TraceableModel.cpp
     Source/Object/Light/DirectionalLight.cpp
+    Source/Object/Light/PointLight.cpp
     Source/Object/Camera/Camera.cpp
     Source/Ray/Ray.cpp
     Source/Scene/Scene.cpp
