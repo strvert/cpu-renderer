@@ -1,6 +1,9 @@
 #pragma once
 
 #include "linalg/linalg.h"
+#include "Material/Material.h"
+#include <functional>
+#include <optional>
 
 namespace Raytracer {
 
@@ -10,7 +13,8 @@ template <typename T = float>
 class TRange {
 public:
     constexpr TRange(const T& TMin, const T& TMax)
-        : TMin(TMin), TMax(TMax)
+        : TMin(TMin)
+        , TMax(TMax)
     {
     }
 
@@ -24,16 +28,19 @@ public:
         return Value <= TMax && Value >= TMin;
     }
 
-    static constexpr TRange<T> Full() {
+    static constexpr TRange<T> Full()
+    {
         return TRange<T>(std::numeric_limits<T>::lowest(), std::numeric_limits<T>::max());
     }
 
-    static constexpr TRange<T> Positive(){
-         return TRange<T>(0, std::numeric_limits<T>::max());
+    static constexpr TRange<T> Positive()
+    {
+        return TRange<T>(0, std::numeric_limits<T>::max());
     }
 
-    static constexpr TRange<T> Negative(){
-         return TRange<T>(std::numeric_limits<T>::lowest(), 0);
+    static constexpr TRange<T> Negative()
+    {
+        return TRange<T>(std::numeric_limits<T>::lowest(), 0);
     }
 
     T TMin;
@@ -62,6 +69,7 @@ struct SurfaceRecord {
     float3 Position;
     float3 Color;
     float3 Normal;
+    std::optional<Material> Material;
 };
 
 }
