@@ -5,7 +5,9 @@
 
 namespace Raytracer {
 
-    using linalg::aliases::float3;
+struct Ray;
+
+using linalg::aliases::float3;
 
 class Light : public SceneObject {
 public:
@@ -16,6 +18,8 @@ public:
     }
 
     virtual ~Light() { }
+
+    using ShadowRay = std::tuple<Ray, float>;
 
     virtual Light& SetLocation(const float3& Location) override
     {
@@ -43,6 +47,21 @@ public:
     {
         return Color;
     }
+
+    virtual float GetIntensity() const
+    {
+        return Intensity;
+    }
+
+    virtual Light& SetIntensity(const float& Intensity)
+    {
+        this->Intensity = Intensity;
+        return *this;
+    }
+
+    virtual float GetIrradiance(const float3& SurfacePoint, const float3& Normal) const = 0;
+
+    virtual ShadowRay MakeShadowRay(const float3& SurfacePoint) const = 0;
 
 private:
     float Intensity;

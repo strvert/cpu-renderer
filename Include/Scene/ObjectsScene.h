@@ -61,6 +61,9 @@ private:
         return dynamic_cast<T&>(*Iter->second);
     }
 
+    std::optional<const SurfaceRecord> CheckHit(const Ray& Ray, const TRange<float>& Range) const;
+
+
     ObjectCollection<TraceableModel> Models;
     ObjectCollection<Camera> Cameras;
     ObjectCollection<Light> Lights;

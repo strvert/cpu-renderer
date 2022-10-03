@@ -7,12 +7,8 @@
 
 #include "linalg/linalg.h"
 
-#include "Object/Light/DirectionalLight.h"
-#include "Object/Model/Plane.h"
-#include "Object/Model/Sphere.h"
-#include "Painter/FacingRatioPainter.h"
-#include "Painter/SceneColorPainter.h"
-#include "Painter/WorldNormalPainter.h"
+#include "Object/Objects.h"
+#include "Painter/Painters.h"
 #include "Ray/Ray.h"
 #include "Scene/ObjectsScene.h"
 #include "Material/Color.h"
@@ -58,7 +54,12 @@ void InitLights(RT::ObjectsScene& Scene)
 {
     Scene.Emplace<RT::DirectionalLight>("dlight1"s)
         .SetDirection({ 0.3, 0.3, -1 })
-        .SetLocation({});
+        .SetLocation({})
+        .SetIntensity(0.5);
+
+    // Scene.Emplace<RT::PointLight>("plight1"s)
+    //     .SetLocation({8, -8, 8})
+    //     .SetIntensity(0.3);
 }
 
 void InitScene(RT::ObjectsScene& Scene)

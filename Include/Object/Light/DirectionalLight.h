@@ -1,10 +1,14 @@
 #pragma once
 
+#include <functional>
 #include "Object/Light/Light.h"
 #include "Material/Color.h"
-#include <functional>
+
+// DirectionalLightのIntensityはルクスとする
 
 namespace Raytracer {
+
+struct Ray;
 
 class DirectionalLight : public Light {
 public:
@@ -15,6 +19,9 @@ public:
     }
 
     virtual ~DirectionalLight() { }
+
+    virtual ShadowRay MakeShadowRay(const float3& SurfacePoint) const override;
+    virtual float GetIrradiance(const float3& SurfacePoint, const float3& Normal) const override;
 
     float3 GetDirection() const;
     DirectionalLight& SetDirection(const float3& Direction);
