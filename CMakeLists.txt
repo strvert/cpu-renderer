@@ -33,5 +33,6 @@ target_sources(raytracer
     Source/Scene/Scene.cpp
     Source/Scene/ObjectsScene.cpp
     Source/Tracer/Tracer.cpp
+    Source/Material/Lambert.cpp
     Source/Console/Progress.cpp
     )
