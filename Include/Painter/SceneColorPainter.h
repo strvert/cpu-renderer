@@ -14,7 +14,7 @@ public:
         : Painter(Background) {};
     virtual ~SceneColorPainter() {};
 
-    virtual float3 Paint(const Camera& Camera, const std::optional<SurfaceRecord>& Record) const override
+    virtual float3 Paint(const Camera&, const std::optional<SurfaceRecord>& Record) const override
     {
         if (Record && Record->IsFront) {
             return Record->Color * Record->Radiance;
