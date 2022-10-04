@@ -9,10 +9,10 @@ Lambert::Lambert()
 
 SurfaceResponse Lambert::Reflect(const SurfaceRecord& Record, const Ray& InRay) const
 {
-    return { true, Ray({ 0, 0, 0 }, { 0, 0, 1 }) };
+    return { true, Ray(Record.Position, this->RandomVectorInHemisphere(Record.Normal)) };
 }
 
-float3 Lambert::RandomVectorInHemisphere(const float3& Normal)
+float3 Lambert::RandomVectorInHemisphere(const float3& Normal) const
 {
     return normalize(float3(Distribution(RandomEngine), Distribution(RandomEngine), Distribution(RandomEngine)));
 }

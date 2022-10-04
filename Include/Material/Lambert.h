@@ -12,7 +12,7 @@ public:
     virtual SurfaceResponse Reflect(const SurfaceRecord& Record, const Ray& InRay) const = 0;
 
 private:
-    float3 RandomVectorInHemisphere(const float3& Normal);
+    float3 RandomVectorInHemisphere(const float3& Normal) const;
 
     std::mt19937 RandomEngine;
     inline static std::uniform_real_distribution<float> Distribution

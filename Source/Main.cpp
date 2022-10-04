@@ -71,7 +71,7 @@ void InitScene(RT::ObjectsScene& Scene)
 
 int main()
 {
-    RT::Tracer Tracer(1080);
+    RT::Tracer Tracer(3840);
 
     RT::ObjectsScene& Scene = Tracer.EmplaceScene<RT::ObjectsScene>();
 
@@ -79,14 +79,14 @@ int main()
 
     InitScene(Scene);
 
-    Scene.SwitchCamera("cam2"s);
-    Tracer.EmplacePainter<RT::WorldNormalPainter>();
-    Tracer.Render();
-    Tracer.Save("WorldNormal.png"s);
+    Scene.SwitchCamera("cam1"s);
+    // Tracer.EmplacePainter<RT::WorldNormalPainter>();
+    // Tracer.Render();
+    // Tracer.Save("WorldNormal.png"s);
 
-    Tracer.EmplacePainter<RT::FacingRatioPainter>();
-    Tracer.Render();
-    Tracer.Save("FacingRatio.png"s);
+    // Tracer.EmplacePainter<RT::FacingRatioPainter>();
+    // Tracer.Render();
+    // Tracer.Save("FacingRatio.png"s);
 
     Tracer.EmplacePainter<RT::SceneColorPainter>();
     Tracer.Render();

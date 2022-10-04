@@ -4,6 +4,7 @@
 #include <optional>
 
 #include "Ray/Ray.h"
+#include "Material/Material.h"
 #include "Object/SceneObject.h"
 
 namespace Raytracer {
@@ -13,7 +14,7 @@ public:
     TraceableModel()
     {
     }
-    virtual ~TraceableModel() { }
+    virtual ~TraceableModel();
 
     virtual TraceableModel& SetLocation(const float3& Location) override;
     virtual float3 GetLocation() const override;
@@ -26,6 +27,7 @@ public:
 private:
     float3 Location;
     float3 Color;
+    std::unique_ptr<Material> Mat;
 };
 
 }

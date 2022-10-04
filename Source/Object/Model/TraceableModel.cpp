@@ -4,6 +4,8 @@ namespace Raytracer {
 
 using namespace linalg::aliases;
 
+TraceableModel::~TraceableModel() {}
+
 TraceableModel& TraceableModel::SetLocation(const float3& Location)
 {
     this->Location = Location;

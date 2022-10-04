@@ -14,7 +14,7 @@ struct SurfaceResponse {
 class Material {
 public:
     Material() { }
-    virtual ~Material() { }
+    virtual ~Material();
 
     virtual SurfaceResponse Reflect(const SurfaceRecord& Record, const Ray& InRay) const = 0;
 };
