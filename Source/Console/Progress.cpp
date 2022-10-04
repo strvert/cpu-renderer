@@ -41,6 +41,12 @@ void Progress::WakePrintTask()
     PrintTask.detach();
 }
 
+void Progress::Increment(const std::uint32_t Value) 
+{
+    Current += Value;
+    PrintCond.notify_all();
+}
+
 void Progress::PrintProgress()
 {
     const float P = static_cast<float>(Current) / static_cast<float>(Total);
@@ -53,9 +59,9 @@ void Progress::PrintProgress()
     for (std::uint32_t Idx = 0; Idx < BarLength - Filled; Idx++) {
         std::cout << " ";
     }
-    std::cout << "|";
+    std::cout << "| ";
 
-    std::cout << " ( " << Current << " / " << Total << " )\e[1G";
+    std::cout << static_cast<unsigned>((100.0f * static_cast<float>(Current)) / static_cast<float>(Total)) << "%\e[1G";
 }
 
 void Progress::Update(const std::uint32_t Value)

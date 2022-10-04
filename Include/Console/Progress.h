@@ -10,6 +10,7 @@ class Progress {
 public:
     Progress(const std::uint32_t Total, const std::uint32_t BarLength = 20);
 
+    void Increment(const std::uint32_t Value);
     void Update(const std::uint32_t Value);
     void End();
 
