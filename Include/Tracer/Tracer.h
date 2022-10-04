@@ -2,12 +2,13 @@
 
 #include <memory>
 #include <optional>
+#include <span>
 #include <vector>
 
 #include "Painter/Painter.h"
 #include "Ray/Ray.h"
-#include "Tracer/RenderRecord.h"
 #include "Scene/Scene.h"
+#include "Tracer/RenderRecord.h"
 #include "linalg/linalg.h"
 
 namespace Raytracer {
@@ -43,8 +44,10 @@ public:
     float2 RadianFov() const;
 
     void SetPixelByIndex(const std::size_t Index, const float3& Color);
+    void SetPixelByIndex(const std::span<byte3> PartialBuffer, const std::size_t Index, const float3& Color);
 
     void Render();
+    void ScanlineRender(std::span<byte3> PartialBuffer, const Camera& Cam, std::uint32_t Y);
 
     void Save(const std::string& Filename) const;
 

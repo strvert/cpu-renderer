@@ -1,5 +1,6 @@
 #include "Tracer/Tracer.h"
 
+#include <future>
 #include <iostream>
 #include <optional>
 
@@ -31,7 +32,12 @@ float2 Tracer::PixelToUV(const uint2& Res, const uint2& Position)
 
 void Tracer::SetPixelByIndex(const std::size_t Index, const float3& Color)
 {
-    Buffer[Index] = static_cast<byte3>(float3(255) * min(Color, 1.0f));
+    SetPixelByIndex(Buffer, Index, Color);
+}
+
+void Tracer::SetPixelByIndex(const std::span<byte3> PartialBuffer, const std::size_t Index, const float3& Color)
+{
+    PartialBuffer[Index] = static_cast<byte3>(float3(255) * min(Color, 1.0f));
 }
 
 void Tracer::Render()
@@ -47,21 +53,36 @@ void Tracer::Render()
 
         AllocateBuffer(Res);
 
-        auto&& RenderProgress = Progress(Res.y * Res.x, 100);
-        for (std::uint32_t Y = 0; Y < Res.y; Y++) {
-            for (std::uint32_t X = 0; X < Res.x; X++) {
-                const std::size_t Index = PixelToIndex(Res, { X, Y });
-                const float2 UV = PixelToUV(Res, { X, Y });
+        // auto&& RenderProgress = Progress(Res.y * Res.x, 100);
+        std::vector<std::future<void>> Futures;
+        Futures.reserve(Res.y);
 
-                const Ray PrimaryRay = Camera.MakeRay(UV);
-                const float3 Color = CurrentPainter->Paint(Camera, CurrentScene->RayCast(CurrentPainter->GetRenderFlags(), PrimaryRay));
-                SetPixelByIndex(Index, Color);
-            }
-            RenderProgress.Update((1 + Y) * Res.x);
+        for (std::uint32_t Y = 0; Y < Res.y; Y++) {
+            Futures.push_back(
+                std::async(std::launch::async, [this, Y, &Res, &Camera] {
+                    ScanlineRender(std::span { Buffer }.subspan(Y * Res.x, Res.x), Camera, Y);
+                }));
+            // RenderProgress.Update((1 + Y) * Res.x);
         }
-        RenderProgress.End();
+        // RenderProgress.End();
+
+        for (auto& Future : Futures) {
+            Future.wait();
+        }
 
         LastRender = RenderRecord { .Resolution = Res };
+    }
+}
+
+void Tracer::ScanlineRender(std::span<byte3> PartialBuffer, const Camera& Cam, std::uint32_t Y)
+{
+    const auto& Res = Cam.CalcResolution(ImageWidth);
+    for (std::uint32_t X = 0; X < Res.x; X++) {
+        const float2 UV = PixelToUV(Res, { X, Y });
+
+        const Ray PrimaryRay = Cam.MakeRay(UV);
+        const float3 Color = CurrentPainter->Paint(Cam, CurrentScene->RayCast(CurrentPainter->GetRenderFlags(), PrimaryRay));
+        SetPixelByIndex(PartialBuffer, X, Color);
     }
 }
 
