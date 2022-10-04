@@ -1,8 +1,11 @@
 #include "Tracer/Tracer.h"
 
+#include <algorithm>
 #include <future>
 #include <iostream>
+#include <list>
 #include <optional>
+#include <thread>
 
 #include "Console/Progress.h"
 #include "Object/Camera/Camera.h"
@@ -14,6 +17,7 @@
 namespace Raytracer {
 
 using namespace linalg::aliases;
+using namespace std::chrono_literals;
 
 Tracer::Tracer(const std::uint32_t& ImageWidth)
     : ImageWidth(ImageWidth)
@@ -53,22 +57,31 @@ void Tracer::Render()
 
         AllocateBuffer(Res);
 
-        // auto&& RenderProgress = Progress(Res.y * Res.x, 100);
-        std::vector<std::future<void>> Futures;
-        Futures.reserve(Res.y);
+        std::list<std::future<void>> Futures;
 
         for (std::uint32_t Y = 0; Y < Res.y; Y++) {
             Futures.push_back(
                 std::async(std::launch::async, [this, Y, &Res, &Camera] {
                     ScanlineRender(std::span { Buffer }.subspan(Y * Res.x, Res.x), Camera, Y);
                 }));
-            // RenderProgress.Update((1 + Y) * Res.x);
         }
-        // RenderProgress.End();
 
-        for (auto& Future : Futures) {
-            Future.wait();
+        auto&& RenderProgress = Progress(Res.y, 100);
+        while (true) {
+            if (Futures.size() == 0) {
+                break;
+            }
+
+            std::this_thread::sleep_for(5ms);
+            std::erase_if(Futures, [&RenderProgress](std::future<void>& Future) {
+                if (Future.wait_for(0s) == std::future_status::ready) {
+                    RenderProgress.Increment(1);
+                    return true;
+                }
+                return false;
+            });
         }
+        RenderProgress.End();
 
         LastRender = RenderRecord { .Resolution = Res };
     }
