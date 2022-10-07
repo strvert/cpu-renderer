@@ -57,14 +57,13 @@ void Tracer::Render()
 
         AllocateBuffer(Res);
 
-        std::list<std::future<void>> Futures;
-
-        for (std::uint32_t Y = 0; Y < Res.y; Y++) {
-            Futures.push_back(
-                std::async(std::launch::async, [this, Y, &Res, &Camera] {
-                    ScanlineRender(std::span { Buffer }.subspan(Y * Res.x, Res.x), Camera, Y);
-                }));
-        }
+        std::list<std::future<void>> Futures(Res.y);
+        std::generate_n(std::begin(Futures), Res.y, [&, Y = -1]() mutable {
+            Y++;
+            return std::async(std::launch::async, [this, Y, &Res, &Camera] {
+                ScanlineRender(std::span { Buffer }.subspan(Y * Res.x, Res.x), Camera, Y);
+            });
+        });
 
         auto&& RenderProgress = Progress(Res.y, 100);
         while (true) {
