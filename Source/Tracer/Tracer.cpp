@@ -41,7 +41,7 @@ void Tracer::SetPixelByIndex(const std::size_t Index, const float3& Color)
 
 void Tracer::SetPixelByIndex(const std::span<byte3> PartialBuffer, const std::size_t Index, const float3& Color)
 {
-    PartialBuffer[Index] = static_cast<byte3>(float3(255) * min(Color, 1.0f));
+    PartialBuffer[Index] = static_cast<byte3>(max(0.0f, float3(255) * min(Color, 1.0f)));
 }
 
 void Tracer::Render()
@@ -91,7 +91,7 @@ void Tracer::ScanlineRender(std::span<byte3> PartialBuffer, const Camera& Cam, s
     const auto& Res = Cam.CalcResolution(ImageWidth);
 
     for (std::uint32_t X = 0; X < Res.x; X++) {
-        const std::vector<float2>& Positions = CurrentSampler->SamplePositions({X, Y});
+        const std::vector<float2>& Positions = CurrentSampler->SamplePositions({ X, Y });
 
         float3 Color;
         for (const auto& Position : Positions) {
