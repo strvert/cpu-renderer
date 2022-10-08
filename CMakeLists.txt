@@ -16,6 +16,14 @@ target_compile_options(raytracer
     PRIVATE
     -Wall
     -Wextra
+    -fsanitize=address,undefined
+    -fno-omit-frame-pointer
+    )
+
+target_link_options(raytracer
+    PRIVATE
+    -fsanitize=address,undefined
+    -fno-omit-frame-pointer
     )
 
 target_include_directories(raytracer
