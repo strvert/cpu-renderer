@@ -34,10 +34,9 @@ TraceableModel& TraceableModel::SetMaterial(std::unique_ptr<Material> InMaterial
 }
 
 OptRef<Material> TraceableModel::GetMaterial() {
-    if (Mat) {
+    if (!Mat) {
         return std::nullopt;
     }
-
     return std::ref(*Mat);
 }
 
