@@ -7,9 +7,9 @@ namespace Raytracer {
 
 class WorldNormalPainter : public Painter {
 public:
-    WorldNormalPainter(const float3& Background = { 0, 0, 0 })
-        : Painter(Background) {};
-    virtual ~WorldNormalPainter() {};
+    WorldNormalPainter(const float3& InBackground = { 0, 0, 0 })
+        : Painter(InBackground) {}
+    virtual ~WorldNormalPainter() override {}
 
     virtual float3 Paint(const Camera&, const std::optional<SurfaceRecord>& Record) const override
     {

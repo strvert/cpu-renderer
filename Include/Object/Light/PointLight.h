@@ -11,14 +11,14 @@ namespace Raytracer {
 class PointLight : public Light {
 public:
     PointLight()
-        : Light(1, Color::White)
+        : Light(1, NamedColor::White)
     {
     }
 
     virtual ShadowRay MakeShadowRay(const float3& SurfacePoint) const override;
     virtual float GetIrradiance(const float3& SurfacePoint, const float3& Normal) const override;
 
-    virtual ~PointLight() { }
+    virtual ~PointLight() override { }
 };
 
 }

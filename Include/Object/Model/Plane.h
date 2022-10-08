@@ -6,12 +6,12 @@ namespace Raytracer {
 
 class PlaneModel : public TraceableModel {
 public:
-    PlaneModel(const float3 Normal)
-        : Normal(Normal)
+    PlaneModel(const float3 InNormal)
+        : Normal(InNormal)
     {
     }
 
-    virtual ~PlaneModel() { }
+    virtual ~PlaneModel() override { }
 
     virtual std::optional<SurfaceRecord> RayCast(const Ray& Ray, const TRange<>& Range) const override;
 

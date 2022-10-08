@@ -15,7 +15,7 @@ class ObjectsScene : public TraceableScene {
     using ObjectCollection = std::unordered_map<std::string, std::unique_ptr<T>>;
 
 public:
-    virtual ~ObjectsScene();
+    virtual ~ObjectsScene() override;
 
     template <typename T, typename... Ts>
     requires std::derived_from<T, TraceableModel>

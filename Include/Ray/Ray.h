@@ -13,9 +13,9 @@ using namespace linalg::aliases;
 template <typename T = float>
 class TRange {
 public:
-    constexpr TRange(const T& TMin, const T& TMax)
-        : TMin(TMin)
-        , TMax(TMax)
+    constexpr TRange(const T& InTMin, const T& InTMax)
+        : TMin(InTMin)
+        , TMax(InTMax)
     {
     }
 
@@ -48,10 +48,14 @@ public:
     T TMax;
 };
 
+// deducation guide
+template <typename T>
+TRange(T TMin, T TMax) -> TRange<T>;
+
 struct Ray {
-    Ray(const float3& Origin, const float3& Direction)
-        : Origin(Origin)
-        , Direction(normalize(Direction))
+    Ray(const float3& InOrigin, const float3& InDirection)
+        : Origin(InOrigin)
+        , Direction(normalize(InDirection))
     {
     }
 

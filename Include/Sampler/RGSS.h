@@ -12,7 +12,7 @@ class RGSS : public Sampler {
 public:
     RGSS();
 
-    virtual std::vector<float2> GetSamplePattern(const uint2&);
+    virtual std::vector<float2> GetSamplePattern(const uint2&) override;
 
     RGSS& SetScale(const std::uint32_t& Scale);
 

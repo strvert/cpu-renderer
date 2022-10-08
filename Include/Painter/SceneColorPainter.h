@@ -10,9 +10,9 @@ namespace Raytracer {
 
 class SceneColorPainter : public Painter {
 public:
-    SceneColorPainter(const float3& Background = { 0, 0, 0 })
-        : Painter(Background) {};
-    virtual ~SceneColorPainter() {};
+    SceneColorPainter(const float3& InBackground = { 0, 0, 0 })
+        : Painter(InBackground) {}
+    virtual ~SceneColorPainter() override {}
 
     virtual float3 Paint(const Camera&, const std::optional<SurfaceRecord>& Record) const override
     {

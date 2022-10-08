@@ -19,9 +19,9 @@ std::vector<float2> RGSS::GetSamplePattern(const uint2&)
     return *Pattern;
 }
 
-RGSS& RGSS::SetScale(const std::uint32_t& Scale)
+RGSS& RGSS::SetScale(const std::uint32_t& InScale)
 {
-    this->Scale = Scale;
+    this->Scale = InScale;
     UpdatePattern();
     return *this;
 }

@@ -11,19 +11,19 @@ using linalg::aliases::float3;
 
 class Light : public SceneObject {
 public:
-    Light(const float Intensity, const float3& Color)
-        : Intensity(Intensity)
-        , Color(Color)
+    Light(const float InIntensity, const float3& InColor)
+        : Intensity(InIntensity)
+        , Color(InColor)
     {
     }
 
-    virtual ~Light() { }
+    virtual ~Light() override { }
 
     using ShadowRay = std::tuple<Ray, float>;
 
-    virtual Light& SetLocation(const float3& Location) override
+    virtual Light& SetLocation(const float3& InLocation) override
     {
-        this->Location = Location;
+        this->Location = InLocation;
         return *this;
     }
 
@@ -37,9 +37,9 @@ public:
         return false;
     }
 
-    virtual Light& SetLightColor(const float3& Color)
+    virtual Light& SetLightColor(const float3& InColor)
     {
-        this->Color = Color;
+        this->Color = InColor;
         return *this;
     }
 
@@ -53,9 +53,9 @@ public:
         return Intensity;
     }
 
-    virtual Light& SetIntensity(const float& Intensity)
+    virtual Light& SetIntensity(const float& InIntensity)
     {
-        this->Intensity = Intensity;
+        this->Intensity = InIntensity;
         return *this;
     }
 
@@ -64,8 +64,8 @@ public:
     virtual ShadowRay MakeShadowRay(const float3& SurfacePoint) const = 0;
 
 private:
-    float Intensity;
     float3 Location;
+    float Intensity;
     float3 Color;
 };
 

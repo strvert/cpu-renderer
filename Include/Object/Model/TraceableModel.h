@@ -14,7 +14,7 @@ public:
     TraceableModel()
     {
     }
-    virtual ~TraceableModel();
+    virtual ~TraceableModel() override;
 
     virtual TraceableModel& SetLocation(const float3& Location) override;
     virtual float3 GetLocation() const override;

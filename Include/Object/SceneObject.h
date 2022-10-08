@@ -12,7 +12,7 @@ protected:
     using uint2 = linalg::aliases::uint2;
 
 public:
-    virtual ~SceneObject() { }
+    virtual ~SceneObject() {}
 
     virtual SceneObject& SetLocation(const float3& Location) = 0;
     virtual float3 GetLocation() const = 0;

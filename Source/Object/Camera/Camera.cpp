@@ -12,14 +12,14 @@ namespace Raytracer {
 Camera::Camera()
 {
     // Default Settings
-    SetAspectRatio(16.0 / 9.0);
+    SetAspectRatio(16.0f / 9.0f);
     SetFov(90);
     SetFocalLength(12);
 }
 
-Camera& Camera::SetLocation(const float3& Location)
+Camera& Camera::SetLocation(const float3& InLocation)
 {
-    this->Location = Location;
+    this->Location = InLocation;
     return *this;
 }
 
@@ -33,9 +33,9 @@ bool Camera::IsTraceable() const
     return false;
 }
 
-Camera& Camera::SetDirection(const float3& Direction)
+Camera& Camera::SetDirection(const float3& InDirection)
 {
-    this->Direction = normalize(Direction);
+    this->Direction = normalize(InDirection);
     return *this;
 }
 
@@ -55,9 +55,9 @@ float Camera::GetAspectRatio() const
     return AspectRatio;
 }
 
-Camera& Camera::SetFocalLength(const float& FocalLength)
+Camera& Camera::SetFocalLength(const float& InFocalLength)
 {
-    this->FocalLength = FocalLength;
+    this->FocalLength = InFocalLength;
     return *this;
 }
 
@@ -66,9 +66,9 @@ float Camera::GetFocalLength() const
     return FocalLength;
 }
 
-Camera& Camera::SetFov(const float& Horizontal)
+Camera& Camera::SetFov(const float& InHorizontal)
 {
-    HorizontalFov = Horizontal;
+    HorizontalFov = InHorizontal;
     return *this;
 }
 

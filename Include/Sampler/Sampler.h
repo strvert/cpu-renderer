@@ -27,7 +27,7 @@ public:
         });
 
         return Positions;
-    };
+    }
 
     virtual std::vector<float2> GetSamplePattern(const uint2& Position) = 0;
 };

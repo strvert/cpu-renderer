@@ -11,9 +11,9 @@ float3 DirectionalLight::GetDirection() const
     return Direction;
 }
 
-DirectionalLight& DirectionalLight::SetDirection(const float3& Direction)
+DirectionalLight& DirectionalLight::SetDirection(const float3& InDirection)
 {
-    this->Direction = normalize(Direction);
+    this->Direction = normalize(InDirection);
     return *this;
 }
 

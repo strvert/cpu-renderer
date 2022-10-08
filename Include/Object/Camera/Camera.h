@@ -9,7 +9,7 @@ class Camera : public SceneObject {
 public:
     Camera();
 
-    virtual ~Camera() { }
+    virtual ~Camera() override { }
 
     virtual Camera& SetLocation(const float3& Location) override;
     virtual float3 GetLocation() const override;

@@ -6,9 +6,9 @@ using namespace linalg::aliases;
 
 TraceableModel::~TraceableModel() {}
 
-TraceableModel& TraceableModel::SetLocation(const float3& Location)
+TraceableModel& TraceableModel::SetLocation(const float3& InLocation)
 {
-    this->Location = Location;
+    this->Location = InLocation;
     return *this;
 }
 
@@ -22,8 +22,8 @@ bool TraceableModel::IsTraceable() const
     return true;
 }
 
-TraceableModel& TraceableModel::SetColor(const float3& Color) {
-    this->Color = Color;
+TraceableModel& TraceableModel::SetColor(const float3& InColor) {
+    this->Color = InColor;
     return *this;
 }
 
