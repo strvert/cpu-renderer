@@ -29,9 +29,9 @@ std::size_t Tracer::PixelToIndex(const uint2& Res, const uint2& Position)
     return Position.y * Res.x + Position.x;
 }
 
-float2 Tracer::PixelToUV(const uint2& Res, const uint2& Position)
+float2 Tracer::PixelToUV(const uint2& Res, const float2& Position)
 {
-    return static_cast<float2>(Position) / static_cast<float2>(Res);
+    return Position / static_cast<float2>(Res);
 }
 
 void Tracer::SetPixelByIndex(const std::size_t Index, const float3& Color)
@@ -89,12 +89,17 @@ void Tracer::Render()
 void Tracer::ScanlineRender(std::span<byte3> PartialBuffer, const Camera& Cam, std::uint32_t Y)
 {
     const auto& Res = Cam.CalcResolution(ImageWidth);
-    for (std::uint32_t X = 0; X < Res.x; X++) {
-        const float2 UV = PixelToUV(Res, { X, Y });
 
-        const Ray PrimaryRay = Cam.MakeRay(UV);
-        const float3 Color = CurrentPainter->Paint(Cam, CurrentScene->RayCast(CurrentPainter->GetRenderFlags(), PrimaryRay));
-        SetPixelByIndex(PartialBuffer, X, Color);
+    for (std::uint32_t X = 0; X < Res.x; X++) {
+        const std::vector<float2>& Positions = CurrentSampler->SamplePositions({X, Y});
+
+        float3 Color;
+        for (const auto& Position : Positions) {
+            const Ray PrimaryRay = Cam.MakeRay(PixelToUV(Res, Position));
+            Color += CurrentPainter->Paint(Cam, CurrentScene->RayCast(CurrentPainter->GetRenderFlags(), PrimaryRay));
+        }
+
+        SetPixelByIndex(PartialBuffer, X, Color / static_cast<float>(Positions.size()));
     }
 }
 

@@ -11,6 +11,7 @@
 #include "Object/Objects.h"
 #include "Painter/Painters.h"
 #include "Ray/Ray.h"
+#include "Sampler/Samplers.h"
 #include "Scene/ObjectsScene.h"
 #include "Tracer/Tracer.h"
 
@@ -71,8 +72,10 @@ void InitScene(RT::ObjectsScene& Scene)
 
 int main()
 {
-    RT::Tracer Tracer(3840);
+    RT::Tracer Tracer(1920);
 
+    Tracer.EmplaceSampler<RT::RGSS>()
+        .SetScale(2);
     RT::ObjectsScene& Scene = Tracer.EmplaceScene<RT::ObjectsScene>();
 
     Scene.ClearAll();
