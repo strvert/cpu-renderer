@@ -7,6 +7,7 @@
 #include "Object/Camera/Camera.h"
 #include "Object/Light/Light.h"
 #include "Object/Model/TraceableModel.h"
+#include "Core/Types.h"
 
 namespace Raytracer {
 

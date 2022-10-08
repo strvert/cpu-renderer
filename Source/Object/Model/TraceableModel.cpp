@@ -1,4 +1,5 @@
 #include "Object/Model/TraceableModel.h"
+#include "Core/Types.h"
 
 namespace Raytracer {
 
@@ -25,6 +26,19 @@ bool TraceableModel::IsTraceable() const
 TraceableModel& TraceableModel::SetColor(const float3& InColor) {
     this->Color = InColor;
     return *this;
+}
+
+TraceableModel& TraceableModel::SetMaterial(std::unique_ptr<Material> InMaterial) {
+    this->Mat = std::move(InMaterial);
+    return *this;
+}
+
+OptRef<Material> TraceableModel::GetMaterial() {
+    if (Mat) {
+        return std::nullopt;
+    }
+
+    return std::ref(*Mat);
 }
 
 float3 TraceableModel::GetColor() const
