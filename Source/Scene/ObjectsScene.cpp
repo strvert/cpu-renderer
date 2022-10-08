@@ -24,8 +24,8 @@ std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flag
 
     if (Flags.DirectLight) {
         for (const auto& [Key, Light] : Lights) {
-            const auto& [SRay, T] = Light->MakeShadowRay(WorkingRec->Position + WorkingRec->Normal * 0.00001f);
-            if (const std::optional<SurfaceRecord>& DirectShadowRecord = CheckHit(SRay, TRange(Range.TMin, T))) {
+            const auto& [SRay, T] = Light->MakeShadowRay(WorkingRec->Position);
+            if (const std::optional<SurfaceRecord>& DirectShadowRecord = CheckHit(SRay, TRange(0.00001f, T))) {
             } else {
                 WorkingRec->Radiance += Light->GetIrradiance(WorkingRec->Position, WorkingRec->Normal);
             }
