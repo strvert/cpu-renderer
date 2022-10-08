@@ -23,6 +23,12 @@ target_compile_options(raytracer
     -Wno-undef
 )
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+    target_compile_options (raytracer PRIVATE -fdiagnostics-color=always)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL Clang)
+    target_compile_options (raytracer PRIVATE -fcolor-diagnostics)
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
     target_compile_options(raytracer
         PRIVATE
