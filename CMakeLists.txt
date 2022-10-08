@@ -16,16 +16,36 @@ target_compile_options(raytracer
     PRIVATE
     -Wall
     -Wextra
-    -fsanitize=address,undefined
-    -fno-omit-frame-pointer
-    )
-    -Werror
+    -Wno-c++98-compat
+    -Wno-c++98-compat-pedantic
+    -Wno-padded
+    -Wno-weak-vtables
+    -Wno-undef
+)
 
-target_link_options(raytracer
-    PRIVATE
-    -fsanitize=address,undefined
-    -fno-omit-frame-pointer
-    )
+if(CMAKE_BUILD_TYPE STREQUAL Debug)
+    target_compile_options(raytracer
+        PRIVATE
+        -fsanitize=address,undefined
+        -fno-omit-frame-pointer
+        -g3
+        -O0
+        )
+    target_link_options(raytracer
+        PRIVATE
+        -fsanitize=address,undefined
+        -fno-omit-frame-pointer
+        )
+elseif(CMAKE_BUILD_TYPE STREQUAL Release)
+    target_compile_options(raytracer
+        PRIVATE
+        -fsanitize=address,undefined
+        -fno-omit-frame-pointer
+        -g3
+        -O0
+        )
+endif()
+
 
 target_include_directories(raytracer
     PRIVATE
