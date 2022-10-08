@@ -30,7 +30,7 @@ public:
     uint2 CalcResolution(const std::uint32_t& Width) const;
 
     float3 ScreenUVToPosition(const float2& UV) const;
-    class Ray MakeRay(const float2& UV) const;
+    struct Ray MakeRay(const float2& UV) const;
 
 private:
     float3 Location;

@@ -14,7 +14,7 @@ public:
 private:
     float3 RandomVectorInHemisphere(const float3& Normal) const;
 
-    std::mt19937 RandomEngine;
+    mutable std::mt19937 RandomEngine;
     inline static std::uniform_real_distribution<float> Distribution
         = std::uniform_real_distribution ( 0.0f, 1.0f );
 };

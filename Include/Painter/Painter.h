@@ -6,7 +6,7 @@
 namespace Raytracer {
 
 using linalg::aliases::float3;
-class SurfaceRecord;
+struct SurfaceRecord;
 
 struct RenderFlags {
     bool DirectLight;

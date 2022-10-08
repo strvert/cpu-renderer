@@ -15,7 +15,7 @@ public:
     {
     }
 
-    virtual ShadowRay MakeShadowRay(const float3& SurfacePoint) const;
+    virtual ShadowRay MakeShadowRay(const float3& SurfacePoint) const override;
     virtual float GetIrradiance(const float3& SurfacePoint, const float3& Normal) const override;
 
     virtual ~PointLight() { }
