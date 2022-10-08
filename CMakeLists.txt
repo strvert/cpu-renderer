@@ -19,6 +19,7 @@ target_compile_options(raytracer
     -fsanitize=address,undefined
     -fno-omit-frame-pointer
     )
+    -Werror
 
 target_link_options(raytracer
     PRIVATE
