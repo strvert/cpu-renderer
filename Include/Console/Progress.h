@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <condition_variable>
 #include <future>
+#include <chrono>
 
 namespace Raytracer {
 
@@ -29,6 +30,8 @@ private:
     std::promise<void> EndNotify;
     std::promise<void> TaskEnded;
     std::shared_future<void> Keeper;
+
+    std::chrono::system_clock::time_point StartTimePoint;
 };
 
 }

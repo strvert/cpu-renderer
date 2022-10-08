@@ -1,4 +1,5 @@
 #include "Console/Progress.h"
+#include <chrono>
 #include <future>
 #include <iostream>
 #include <thread>
@@ -17,6 +18,7 @@ void Progress::WakePrintTask()
 {
     std::future<void> ENotify = EndNotify.get_future();
     Keeper = TaskEnded.get_future().share();
+    StartTimePoint = std::chrono::system_clock::now();
 
     std::thread PrintTask([&](const std::future<void> Notify, std::promise<void> Ended) {
         std::cout << "\e[?25l" << std::flush;
@@ -25,11 +27,13 @@ void Progress::WakePrintTask()
                 std::unique_lock<std::mutex> Lock(PrintMtx);
                 PrintCond.wait(Lock);
                 PrintProgress();
+                std::cout << "\e[1G";
             }
 
             if (Notify.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
                 PrintProgress();
                 std::cout << "\e[?25h" << std::flush;
+                std::cout << "(" << (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - StartTimePoint).count() / 1000.0f) << "s)";
                 std::cout << std::endl;
                 break;
             }
@@ -41,7 +45,7 @@ void Progress::WakePrintTask()
     PrintTask.detach();
 }
 
-void Progress::Increment(const std::uint32_t Value) 
+void Progress::Increment(const std::uint32_t Value)
 {
     Current += Value;
     PrintCond.notify_all();
@@ -61,7 +65,7 @@ void Progress::PrintProgress()
     }
     std::cout << "| ";
 
-    std::cout << static_cast<unsigned>((100.0f * static_cast<float>(Current)) / static_cast<float>(Total)) << "%\e[1G";
+    std::cout << static_cast<unsigned>((100.0f * static_cast<float>(Current)) / static_cast<float>(Total)) << "% ";
 }
 
 void Progress::Update(const std::uint32_t Value)
