@@ -4,6 +4,9 @@ project(cpp-raytracer)
 
 add_executable(raytracer)
 
+set(CMAKE_C_COMPILER clang)
+set(CMAKE_CXX_COMPILER clang++)
+
 target_compile_features(raytracer
     PRIVATE
     cxx_std_20
