@@ -74,8 +74,8 @@ int main()
 {
     RT::Tracer Tracer(1920);
 
-    Tracer.EmplaceSampler<RT::RGSS>()
-        .SetScale(2);
+    Tracer.EmplaceSampler<RT::NSS>();
+
     RT::ObjectsScene& Scene = Tracer.EmplaceScene<RT::ObjectsScene>();
 
     Scene.ClearAll();
