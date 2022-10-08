@@ -36,13 +36,22 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
         -fsanitize=address,undefined
         -fno-omit-frame-pointer
         )
-elseif(CMAKE_BUILD_TYPE STREQUAL Release)
+elseif(CMAKE_BUILD_TYPE STREQUAL Development)
     target_compile_options(raytracer
         PRIVATE
         -fsanitize=address,undefined
         -fno-omit-frame-pointer
-        -g3
-        -O0
+        -O2
+        )
+    target_link_options(raytracer
+        PRIVATE
+        -fsanitize=address,undefined
+        -fno-omit-frame-pointer
+        )
+elseif(CMAKE_BUILD_TYPE STREQUAL Release)
+    target_compile_options(raytracer
+        PRIVATE
+        -O3
         )
 endif()
 
