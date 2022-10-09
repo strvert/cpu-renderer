@@ -13,6 +13,8 @@ ObjectsScene::~ObjectsScene() { }
 void ObjectsScene::ClearAll()
 {
     Models.clear();
+    Lights.clear();
+    Cameras.clear();
 }
 
 std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flags, const Ray& InRay, const TRange<float>& Range, const std::uint64_t Depth) const
