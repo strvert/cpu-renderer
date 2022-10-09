@@ -30,12 +30,12 @@ static void InitObjects(RT::ObjectsScene& Scene)
 
 static void InitCameras(RT::ObjectsScene& Scene)
 {
-    Scene.Emplace<RT::Camera>("cam1"s)
-        .SetLocation({ -10, 0, 6 })
+    Scene.Emplace<RT::OrthographicCamera>("cam1"s)
+        .SetLocation({ 10, 0, 7 })
         .SetDirection({ 0.5, 0.0, -0.2 });
     //  .SetAspectRatio(1);
 
-    Scene.Emplace<RT::Camera>("cam2"s)
+    Scene.Emplace<RT::PerspectiveCamera>("cam2"s)
         .SetLocation({ -8, 0, 15 })
         .SetDirection({ 0.65f, 0.0f, -1.0f });
     //  .SetAspectRatio(1);
@@ -55,10 +55,9 @@ static void InitLights(RT::ObjectsScene& Scene)
         .SetIntensity(1);
 }
 
-static void ScatterSpheres(RT::ObjectsScene& Scene)
+static void ScatterSpheres(RT::ObjectsScene& Scene, const std::uint32_t seed)
 {
-    std::random_device seed_gen;
-    std::mt19937 engine(seed_gen());
+    std::mt19937 engine(seed);
     std::uniform_real_distribution<> dist1(-1.0, 1.0);
     std::uniform_real_distribution<> dist2(0.0, 1.0);
     std::vector<std::shared_ptr<RT::Material>> Mats;
@@ -84,20 +83,25 @@ static void ScatterSpheres(RT::ObjectsScene& Scene)
     }
 }
 
+static void ScatterSpheres(RT::ObjectsScene& Scene) {
+    std::random_device seed_gen;
+    ScatterSpheres(Scene, seed_gen());
+}
+
 static void InitScene(RT::ObjectsScene& Scene)
 {
     InitObjects(Scene);
-    ScatterSpheres(Scene);
+    ScatterSpheres(Scene, 18);
     InitCameras(Scene);
     InitLights(Scene);
 }
 
 int main()
 {
-    RT::Tracer Tracer(1920);
+    RT::Tracer Tracer(1280);
 
     Tracer.EmplaceSampler<RT::RGSS>();
-    Tracer.SetSamples(5);
+    Tracer.SetSamples(3);
 
     RT::ObjectsScene& Scene = Tracer.EmplaceScene<RT::ObjectsScene>();
 
