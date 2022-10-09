@@ -78,6 +78,7 @@ target_sources(raytracer
     Source/Object/Light/PointLight.cpp
     Source/Object/Camera/Camera.cpp
     Source/Object/Camera/PerspectiveCamera.cpp
+    Source/Object/Camera/OrthographicCamera.cpp
     Source/Ray/Ray.cpp
     Source/Scene/Scene.cpp
     Source/Scene/ObjectsScene.cpp
