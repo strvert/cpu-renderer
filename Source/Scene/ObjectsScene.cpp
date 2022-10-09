@@ -21,7 +21,7 @@ std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flag
 {
     std::optional<SurfaceRecord> WorkingRec = CheckHit(InRay, Range);
 
-    if (Depth > 20) {
+    if (Depth > 10) {
         return std::nullopt;
     }
 
