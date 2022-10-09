@@ -53,6 +53,7 @@ public:
     virtual OptRef<Camera> GetActiveCamera() const override;
     
     bool SwitchCamera(const std::string& Name);
+    ObjectsScene& SetBackgroundRadiance(const float3& InBackground);
 
 private:
     template <typename T, typename CollectionT, typename... Ts>
@@ -64,11 +65,11 @@ private:
 
     std::optional<const SurfaceRecord> CheckHit(const Ray& Ray, const TRange<float>& Range) const;
 
-
     ObjectCollection<TraceableModel> Models;
     ObjectCollection<Camera> Cameras;
     ObjectCollection<Light> Lights;
     std::string ActiveCameraName;
+    float3 BackgroundRadiance;
 };
 
 }

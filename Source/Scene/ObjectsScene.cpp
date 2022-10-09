@@ -31,7 +31,7 @@ std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flag
             .IsFront = true,
             .Position = float3(),
             .Normal = float3(),
-            .Radiance = float3 { 0.0f, 0.0f, 0.0f },
+            .Radiance = BackgroundRadiance,
             .Mat = std::weak_ptr<Material>()
         };
     }
@@ -93,6 +93,12 @@ bool ObjectsScene::SwitchCamera(const std::string& Name)
         return true;
     }
     return false;
+}
+
+ObjectsScene& ObjectsScene::SetBackgroundRadiance(const float3& InBackground)
+{
+    BackgroundRadiance = InBackground;
+    return *this;
 }
 
 }
