@@ -10,12 +10,12 @@ Light::ShadowRay PointLight::MakeShadowRay(const float3& SurfacePoint) const
     return { Ray(SurfacePoint, Dir), length(Dir) };
 }
 
-float PointLight::GetIrradiance(const float3& SurfacePoint, const float3& Normal) const
+float3 PointLight::GetIrradiance(const float3& SurfacePoint, const float3& Normal) const
 {
     const float3& Dir = GetLocation() - SurfacePoint;
     const float& Len = length(Dir);
-    const float& Irradiance = GetIntensity() * dot(Normal, normalize(Dir)) / (Len * Len);
-    return Irradiance;
+    const float& Irradiance = GetIntensity() * std::max(0.0f, dot(Normal, normalize(Dir))) / (Len * Len);
+    return Irradiance * GetLightColor();
 }
 
 }

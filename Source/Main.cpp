@@ -8,6 +8,7 @@
 #include "linalg/linalg.h"
 
 #include "Material/Color.h"
+#include "Material/Materials.h"
 #include "Object/Objects.h"
 #include "Painter/Painters.h"
 #include "Ray/Ray.h"
@@ -23,26 +24,35 @@ static void InitObjects(RT::ObjectsScene& Scene)
 {
     Scene.Emplace<RT::SphereModel>("sphere1"s, 2)
         .SetLocation({ 0, -5, 2 })
+        .SetMaterial(std::make_shared<RT::Lambert>())
         .SetColor(RT::NamedColor::Red);
 
     Scene.Emplace<RT::SphereModel>("sphere2"s, 3)
         .SetLocation({ 0, 0, 3 })
-        .SetColor(RT::NamedColor::Green);
+        .SetMaterial(std::make_shared<RT::PerfectReflection>())
+        .SetColor({ 0.0f, 0.8f, 0.8f });
 
     Scene.Emplace<RT::SphereModel>("sphere3"s, 2)
         .SetLocation({ 0, 5, 2 })
-        .SetColor(RT::NamedColor::Blue);
+        .SetMaterial(std::make_shared<RT::PerfectReflection>())
+        .SetColor(RT::NamedColor::Indigo);
 
     Scene.Emplace<RT::PlaneModel>("ground"s, float3 { 0, 0, 1 })
         .SetLocation({ 0, 0, 0 })
-        .SetColor(RT::NamedColor::White);
+        .SetMaterial(std::make_shared<RT::Lambert>())
+        .SetColor({ 0.1f, 0.9f, 0.1f });
+
+    Scene.Emplace<RT::PlaneModel>("wall"s, float3 { 0, 1, 0 })
+        .SetLocation({ 0, -10, 0 })
+        .SetMaterial(std::make_shared<RT::PerfectReflection>())
+        .SetColor({ 1.0f, 1.0f, 1.0f });
 }
 
 static void InitCameras(RT::ObjectsScene& Scene)
 {
     Scene.Emplace<RT::Camera>("cam1"s)
         .SetLocation({ -10, 0, 3 })
-        .SetDirection({ 0.5, 0, 0.0 });
+        .SetDirection({ 0.5, -0.1, 0.0 });
     //  .SetAspectRatio(1);
 
     Scene.Emplace<RT::Camera>("cam2"s)
@@ -51,16 +61,17 @@ static void InitCameras(RT::ObjectsScene& Scene)
     //  .SetAspectRatio(1);
 }
 
-static void InitLights(RT::ObjectsScene& Scene)
+void InitLights(RT::ObjectsScene& Scene)
 {
     Scene.Emplace<RT::DirectionalLight>("dlight1"s)
-        .SetDirection({ 0.3f, 0.3f, -1.0f })
-        .SetLocation({})
-        .SetIntensity(0.5);
+        .SetDirection({ -0.3f, -0.3f, -1.0f })
+        .SetLightColor({ 1.0f, 1.0f, 1.0f })
+        .SetIntensity(1.2f);
 
     Scene.Emplace<RT::PointLight>("plight1"s)
-        .SetLocation({ -7, -5, 5 })
-        .SetIntensity(20);
+        .SetLocation({ -6, -5, 4 })
+        .SetLightColor({ 1.0f, 1.0f, 1.0f })
+        .SetIntensity(1);
 }
 
 static void InitScene(RT::ObjectsScene& Scene)
@@ -72,9 +83,9 @@ static void InitScene(RT::ObjectsScene& Scene)
 
 int main()
 {
-    RT::Tracer Tracer(1920);
+    RT::Tracer Tracer(640);
 
-    Tracer.EmplaceSampler<RT::RGSS>();
+    Tracer.EmplaceSampler<RT::RGSS>().SetScale(2);
 
     RT::ObjectsScene& Scene = Tracer.EmplaceScene<RT::ObjectsScene>();
 

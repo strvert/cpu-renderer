@@ -7,9 +7,15 @@ Lambert::Lambert()
 {
 }
 
-SurfaceResponse Lambert::Reflect(const SurfaceRecord& Record, const Ray&) const
+std::optional<Ray> Lambert::Reflect(const float3& Position, const float3& Normal, const Ray& InRay) const
 {
-    return { true, Ray(Record.Position, this->RandomVectorInHemisphere(Record.Normal)) };
+    float3 AdHoc = this->RandomVectorInHemisphere(Normal);
+    return Ray(Position, dot(Normal, AdHoc) <= 0 ? abs(AdHoc) : AdHoc);
+}
+
+bool Lambert::ForceShadowRay() const
+{
+    return true;
 }
 
 float3 Lambert::RandomVectorInHemisphere(const float3&) const

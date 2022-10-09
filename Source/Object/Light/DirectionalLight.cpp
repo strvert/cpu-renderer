@@ -1,6 +1,7 @@
 #include "Object/Light/DirectionalLight.h"
 #include "Ray/Ray.h"
 #include <limits>
+#include <iostream>
 
 namespace Raytracer {
 
@@ -22,9 +23,9 @@ Light::ShadowRay DirectionalLight::MakeShadowRay(const float3& SurfacePosition) 
     return { Ray(SurfacePosition, -Direction), std::numeric_limits<float>::max() };
 }
 
-float DirectionalLight::GetIrradiance(const float3&, const float3& Normal) const
+float3 DirectionalLight::GetIrradiance(const float3&, const float3& Normal) const
 {
-    return GetIntensity() * dot(Normal, -Direction);
+    return GetLightColor() * GetIntensity() * std::max(0.0f, dot(Normal, -Direction));
 }
 
 }

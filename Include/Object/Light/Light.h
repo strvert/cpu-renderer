@@ -59,7 +59,7 @@ public:
         return *this;
     }
 
-    virtual float GetIrradiance(const float3& SurfacePoint, const float3& Normal) const = 0;
+    virtual float3 GetIrradiance(const float3& SurfacePoint, const float3& Normal) const = 0;
 
     virtual ShadowRay MakeShadowRay(const float3& SurfacePoint) const = 0;
 

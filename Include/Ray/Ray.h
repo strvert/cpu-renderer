@@ -72,9 +72,8 @@ struct SurfaceRecord {
     float T;
     bool IsFront;
     float3 Position;
-    float3 Color;
     float3 Normal;
-    float Radiance;
+    float3 Radiance;
     std::weak_ptr<class Material> Mat;
 };
 

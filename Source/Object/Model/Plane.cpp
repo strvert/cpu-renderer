@@ -21,7 +21,7 @@ std::optional<SurfaceRecord> PlaneModel::RayCast(const Ray& Ray, const TRange<fl
     }
 
     const bool Front = D < 0;
-    return SurfaceRecord { .T = T, .IsFront = Front, .Position = Ray.P(T), .Color = GetColor(), .Normal = Normal, .Radiance = 0, .Mat = {} };
+    return SurfaceRecord { .T = T, .IsFront = Front, .Position = Ray.P(T), .Normal = Normal, .Radiance = GetColor(), .Mat = GetMaterial() };
 }
 
 }

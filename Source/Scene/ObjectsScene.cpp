@@ -1,9 +1,12 @@
 #include "Scene/ObjectsScene.h"
-#include "Ray/Ray.h"
 #include "Painter/Painter.h"
+#include "Ray/Ray.h"
 #include <iostream>
+#include <memory>
 
 namespace Raytracer {
+
+static constexpr const float ScatteredTMin = 0.00001f;
 
 ObjectsScene::~ObjectsScene() { }
 
@@ -12,22 +15,39 @@ void ObjectsScene::ClearAll()
     Models.clear();
 }
 
-std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flags, const Ray& InRay, const TRange<float>& Range) const
+std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flags, const Ray& InRay, const TRange<float>& Range, const std::uint64_t Depth) const
 {
     std::optional<SurfaceRecord> WorkingRec = CheckHit(InRay, Range);
 
-    if (!WorkingRec) {
+    if (Depth > 20) {
         return std::nullopt;
     }
 
-    TRange<float> WorkingRange(Range.TMin, WorkingRec->T);
+    if (!WorkingRec) {
+        return SurfaceRecord {
+            .T = 0,
+            .IsFront = true,
+            .Position = float3(),
+            .Normal = float3(),
+            .Radiance = float3 { 0.0f, 0.0f, 0.0f },
+            .Mat = std::weak_ptr<Material>()
+        };
+    }
 
-    if (Flags.DirectLight) {
-        for (const auto& [Key, Light] : Lights) {
-            const auto& [SRay, T] = Light->MakeShadowRay(WorkingRec->Position);
-            if (const std::optional<SurfaceRecord>& DirectShadowRecord = CheckHit(SRay, TRange(0.00001f, T))) {
-            } else {
-                WorkingRec->Radiance += Light->GetIrradiance(WorkingRec->Position, WorkingRec->Normal);
+    if (const std::shared_ptr<Material> Mat = WorkingRec->Mat.lock()) {
+        if (const std::optional<Ray> Reflected = Mat->Reflect(WorkingRec->Position, WorkingRec->Normal, InRay)) {
+            if (const std::optional<SurfaceRecord> ReflectedRec = RayCast(Flags, *Reflected, TRange(ScatteredTMin, std::numeric_limits<float>::max()), Depth + 1)) {
+                WorkingRec->Radiance *= ReflectedRec->Radiance / std::numbers::pi_v<float>;
+            }
+        }
+
+        if (Flags.DirectLight && Mat->ForceShadowRay()) {
+            for (const auto& [Key, Light] : Lights) {
+                const auto& [SRay, ST] = Light->MakeShadowRay(WorkingRec->Position);
+                if (const std::optional<SurfaceRecord>& DirectShadowRecord = CheckHit(SRay, TRange(ScatteredTMin, ST))) {
+                } else {
+                    WorkingRec->Radiance += Light->GetIrradiance(WorkingRec->Position, WorkingRec->Normal) / std::numbers::pi_v<float>;
+                }
             }
         }
     }
@@ -37,7 +57,7 @@ std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flag
 
 std::optional<const SurfaceRecord> ObjectsScene::CheckHit(const Ray& InRay, const TRange<float>& Range) const
 {
-    std::optional<SurfaceRecord> WorkingRec;
+    std::optional<SurfaceRecord> WorkingRec = std::nullopt;
     TRange<float> WorkingRange = Range;
 
     for (const auto& [Key, Model] : Models) {

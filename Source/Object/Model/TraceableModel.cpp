@@ -28,16 +28,13 @@ TraceableModel& TraceableModel::SetColor(const float3& InColor) {
     return *this;
 }
 
-TraceableModel& TraceableModel::SetMaterial(std::unique_ptr<Material> InMaterial) {
+TraceableModel& TraceableModel::SetMaterial(std::shared_ptr<Material> InMaterial) {
     this->Mat = std::move(InMaterial);
     return *this;
 }
 
-OptRef<Material> TraceableModel::GetMaterial() {
-    if (!Mat) {
-        return std::nullopt;
-    }
-    return std::ref(*Mat);
+std::weak_ptr<Material> TraceableModel::GetMaterial() const {
+    return Mat;
 }
 
 float3 TraceableModel::GetColor() const

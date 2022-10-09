@@ -17,8 +17,8 @@ std::optional<SurfaceRecord> SphereModel::RayCast(const Ray& Ray, const TRange<f
             const float3 P = Ray.P(T);
             const float3 N = (P - GetLocation()) / Radius;
             const bool Front = dot(N, Ray.Direction) < 0;
-            return SurfaceRecord { .T = T, .IsFront = Front, .Position = P, .Color = GetColor(), .Normal = N, .Radiance = 0, .Mat = {} };
-        }
+            return SurfaceRecord { .T = T, .IsFront = Front, .Position = P, .Normal = N, .Radiance = GetColor(), .Mat = GetMaterial() };
+        };
     }
 
     return std::nullopt;

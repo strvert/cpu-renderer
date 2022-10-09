@@ -6,17 +6,13 @@ namespace Raytracer {
 
 struct SurfaceRecord;
 
-struct SurfaceResponse {
-    bool Valid;
-    Ray Out;
-};
-
 class Material {
 public:
     Material() { }
     virtual ~Material();
 
-    virtual SurfaceResponse Reflect(const SurfaceRecord& Record, const Ray& InRay) const = 0;
+    virtual std::optional<Ray> Reflect(const float3& Position, const float3& Normal, const Ray& InRay) const = 0;
+    virtual bool ForceShadowRay() const = 0;
 };
 
 }

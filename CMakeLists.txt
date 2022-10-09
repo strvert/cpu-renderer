@@ -84,5 +84,6 @@ target_sources(raytracer
     Source/Tracer/Tracer.cpp
     Source/Material/Material.cpp
     Source/Material/Lambert.cpp
+    Source/Material/PerfectReflection.cpp
     Source/Console/Progress.cpp
     )

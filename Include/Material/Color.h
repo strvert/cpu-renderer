@@ -8,6 +8,7 @@ namespace Raytracer {
 namespace NamedColor {
     using float3 = linalg::aliases::float3;
 
+    static constexpr const float3 Black = { 0, 0, 0 };
     static constexpr const float3 Silver = { 0.7529411764705882, 0.7529411764705882, 0.7529411764705882 };
     static constexpr const float3 Gray = { 0.5019607843137255, 0.5019607843137255, 0.5019607843137255 };
     static constexpr const float3 White = { 1, 1, 1 };
