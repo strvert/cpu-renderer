@@ -21,7 +21,7 @@ std::optional<const SurfaceRecord> ObjectsScene::RayCast(const RenderFlags& Flag
 {
     std::optional<SurfaceRecord> WorkingRec = CheckHit(InRay, Range);
 
-    if (Depth > 10) {
+    if (Depth > MaxDepth) {
         return std::nullopt;
     }
 
@@ -98,6 +98,11 @@ bool ObjectsScene::SwitchCamera(const std::string& Name)
 ObjectsScene& ObjectsScene::SetBackgroundRadiance(const float3& InBackground)
 {
     BackgroundRadiance = InBackground;
+    return *this;
+}
+
+ObjectsScene& ObjectsScene::SetMaxDepth(const std::uint32_t& InMaxDepth) {
+    MaxDepth = InMaxDepth;
     return *this;
 }
 

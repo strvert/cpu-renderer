@@ -94,15 +94,16 @@ static void InitScene(RT::ObjectsScene& Scene)
 
 int main()
 {
-    RT::Tracer Tracer(1280);
+    RT::Tracer Tracer(1920);
 
-    Tracer.EmplaceSampler<RT::NSS>();
-    Tracer.SetSamples(1);
+    Tracer.EmplaceSampler<RT::RGSS>();
+    Tracer.SetSamples(5);
 
     RT::ObjectsScene& Scene = Tracer.EmplaceScene<RT::ObjectsScene>();
 
     Scene.ClearAll();
     Scene.SetBackgroundRadiance({ 0.5f, 0.5f, 0.5f });
+    Scene.SetMaxDepth(3);
 
     InitScene(Scene);
     Scene.SwitchCamera("cam1"s);

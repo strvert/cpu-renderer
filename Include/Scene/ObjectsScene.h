@@ -4,10 +4,10 @@
 
 #include "Scene.h"
 
+#include "Core/Types.h"
 #include "Object/Camera/Camera.h"
 #include "Object/Light/Light.h"
 #include "Object/Model/TraceableModel.h"
-#include "Core/Types.h"
 
 namespace Raytracer {
 
@@ -16,6 +16,11 @@ class ObjectsScene : public TraceableScene {
     using ObjectCollection = std::unordered_map<std::string, std::unique_ptr<T>>;
 
 public:
+    ObjectsScene()
+        : MaxDepth(20)
+    {
+    }
+
     virtual ~ObjectsScene() override;
 
     template <typename T, typename... Ts>
@@ -51,9 +56,10 @@ public:
 
     virtual std::optional<const SurfaceRecord> RayCast(const RenderFlags& Flags, const Ray& Ray, const TRange<float>& Range, const std::uint64_t Depth = 0) const override;
     virtual OptRef<Camera> GetActiveCamera() const override;
-    
+
     bool SwitchCamera(const std::string& Name);
     ObjectsScene& SetBackgroundRadiance(const float3& InBackground);
+    ObjectsScene& SetMaxDepth(const std::uint32_t& InMaxDepth);
 
 private:
     template <typename T, typename CollectionT, typename... Ts>
@@ -70,6 +76,7 @@ private:
     ObjectCollection<Light> Lights;
     std::string ActiveCameraName;
     float3 BackgroundRadiance;
+    std::uint32_t MaxDepth;
 };
 
 }
