@@ -22,11 +22,6 @@ Ray PerspectiveCamera::MakeRay(const float2& UV) const
     return Ray(GetLocation(), normalize(ScreenUVToPosition(UV) - GetLocation()));
 }
 
-uint2 PerspectiveCamera::CalcResolution(const std::uint32_t& Width) const
-{
-    return static_cast<uint2>(float2 { static_cast<float>(Width), static_cast<float>(Width) / GetAspectRatio() });
-}
-
 PerspectiveCamera& PerspectiveCamera::SetFocalLength(const float& InFocalLength)
 {
     this->FocalLength = InFocalLength;

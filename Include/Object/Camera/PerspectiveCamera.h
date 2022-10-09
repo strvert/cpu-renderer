@@ -11,7 +11,6 @@ public:
     virtual ~PerspectiveCamera() override { }
 
     virtual struct Ray MakeRay(const float2& UV) const override;
-    virtual uint2 CalcResolution(const std::uint32_t& Width) const override;
 
     PerspectiveCamera& SetFocalLength(const float& FocalLength);
     float GetFocalLength() const;
