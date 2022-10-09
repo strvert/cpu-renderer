@@ -21,6 +21,7 @@ using namespace std::chrono_literals;
 
 Tracer::Tracer(const std::uint32_t& ImageWidth)
     : ImageWidth(ImageWidth)
+    , Samples(1)
 {
 }
 
@@ -36,12 +37,18 @@ float2 Tracer::PixelToUV(const uint2& Res, const float2& Position)
 
 void Tracer::SetPixelByIndex(const std::size_t Index, const float3& Color)
 {
-    SetPixelByIndex(Buffer, Index, Color);
+    SetPixelByIndex(RenderingBuffer, Index, Color);
 }
 
-void Tracer::SetPixelByIndex(const std::span<byte3> PartialBuffer, const std::size_t Index, const float3& Color)
+void Tracer::SetPixelByIndex(const std::span<float3> PartialBuffer, const std::size_t Index, const float3& Color)
 {
-    PartialBuffer[Index] = static_cast<byte3>(max(0.0f, float3(255) * min(Color, 1.0f)));
+    PartialBuffer[Index] = min(Color, 1.0f);
+}
+
+void Tracer::UpdatePixelByIndex(const std::span<float3> PartialBuffer, const std::size_t Index, const float3& Color)
+{
+    PartialBuffer[Index] += min(Color, 1.0f);
+    PartialBuffer[Index] /= 2.0f;
 }
 
 void Tracer::Render()
@@ -57,36 +64,38 @@ void Tracer::Render()
 
         AllocateBuffer(Res);
 
-        std::list<std::future<void>> Futures(Res.y);
-        std::generate_n(std::begin(Futures), Res.y, [&, Y = -1]() mutable {
-            Y++;
-            return std::async(std::launch::async, [this, Y, &Res, &Camera] {
-                ScanlineRender(std::span { Buffer }.subspan(Y * Res.x, Res.x), Camera, Y);
+        for (std::uint32_t Sample = 0; Sample < Samples; Sample++) {
+            std::list<std::future<void>> Futures(Res.y);
+            std::generate_n(std::begin(Futures), Res.y, [&, Y = -1]() mutable {
+                Y++;
+                return std::async(std::launch::async, [this, Y, &Res, &Camera] {
+                    ScanlineRender(std::span { RenderingBuffer }.subspan(Y * Res.x, Res.x), Camera, Y);
+                });
             });
-        });
 
-        auto&& RenderProgress = Progress(Res.y, 100);
-        while (true) {
-            if (Futures.size() == 0) {
-                break;
-            }
-
-            std::this_thread::sleep_for(5ms);
-            std::erase_if(Futures, [&RenderProgress](std::future<void>& Future) {
-                if (Future.wait_for(0s) == std::future_status::ready) {
-                    RenderProgress.Increment(1);
-                    return true;
+            auto&& RenderProgress = Progress(Res.y, 100);
+            while (true) {
+                if (Futures.size() == 0) {
+                    break;
                 }
-                return false;
-            });
+
+                std::this_thread::sleep_for(5ms);
+                std::erase_if(Futures, [&RenderProgress](std::future<void>& Future) {
+                    if (Future.wait_for(0s) == std::future_status::ready) {
+                        RenderProgress.Increment(1);
+                        return true;
+                    }
+                    return false;
+                });
+            }
+            RenderProgress.End();
         }
-        RenderProgress.End();
 
         LastRender = RenderRecord { .Resolution = Res };
     }
 }
 
-void Tracer::ScanlineRender(std::span<byte3> PartialBuffer, const Camera& Cam, std::uint32_t Y)
+void Tracer::ScanlineRender(std::span<float3> PartialBuffer, const Camera& Cam, std::uint32_t Y)
 {
     const auto& Res = Cam.CalcResolution(ImageWidth);
 
@@ -99,7 +108,7 @@ void Tracer::ScanlineRender(std::span<byte3> PartialBuffer, const Camera& Cam, s
             Color += CurrentPainter->Paint(Cam, CurrentScene->RayCast(CurrentPainter->GetRenderFlags(), PrimaryRay));
         }
 
-        SetPixelByIndex(PartialBuffer, X, Color / static_cast<float>(Positions.size()));
+        UpdatePixelByIndex(PartialBuffer, X, Color / static_cast<float>(Positions.size()));
     }
 }
 
@@ -110,12 +119,22 @@ void Tracer::Save(const std::string& Filename) const
         return;
     }
     const uint2 Res = LastRender->Resolution;
-    stbi_write_png(Filename.c_str(), Res.x, Res.y, 3, Buffer.data(), 0);
+    std::vector<byte3> ImageBuffer;
+    std::ranges::transform(RenderingBuffer, std::back_inserter(ImageBuffer), [](const float3& Color) {
+        return static_cast<byte3>(max(0.0f, float3(255) * min(Color, 1.0f)));
+    });
+    stbi_write_png(Filename.c_str(), Res.x, Res.y, 3, ImageBuffer.data(), 0);
+}
+
+Tracer& Tracer::SetSamples(const std::uint32_t& InSamples)
+{
+    Samples = InSamples;
+    return *this;
 }
 
 void Tracer::AllocateBuffer(const uint2& Res)
 {
-    Buffer.resize(Res.x * Res.y);
+    RenderingBuffer.resize(Res.x * Res.y);
 }
 
 }

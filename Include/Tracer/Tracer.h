@@ -52,12 +52,15 @@ public:
     float2 RadianFov() const;
 
     void SetPixelByIndex(const std::size_t Index, const float3& Color);
-    void SetPixelByIndex(const std::span<byte3> PartialBuffer, const std::size_t Index, const float3& Color);
+    void SetPixelByIndex(const std::span<float3> PartialBuffer, const std::size_t Index, const float3& Color);
+    void UpdatePixelByIndex(const std::span<float3> PartialBuffer, const std::size_t Index, const float3& Color);
 
     void Render();
-    void ScanlineRender(std::span<byte3> PartialBuffer, const Camera& Cam, std::uint32_t Y);
+    void ScanlineRender(std::span<float3> PartialBuffer, const Camera& Cam, std::uint32_t Y);
 
     void Save(const std::string& Filename) const;
+
+    Tracer& SetSamples(const std::uint32_t& Samples);
 
 private:
     void AllocateBuffer(const uint2& Res);
@@ -68,12 +71,14 @@ private:
 
     std::uint32_t ImageWidth;
 
-    std::vector<byte3> Buffer;
+    std::vector<float3> RenderingBuffer;
     std::unique_ptr<TraceableScene> CurrentScene;
     std::unique_ptr<Painter> CurrentPainter;
     std::unique_ptr<Sampler> CurrentSampler;
 
     std::optional<RenderRecord> LastRender;
+
+    std::uint32_t Samples;
 };
 
 }
